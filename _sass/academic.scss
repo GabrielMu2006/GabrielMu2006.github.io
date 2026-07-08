@@ -229,6 +229,82 @@ samp {
   padding: 0.08rem 0.32rem;
 }
 
+.page__content blockquote {
+  margin: 1.35rem 0;
+  padding: 0.95rem 1.05rem;
+  border-left: 3px solid var(--color-border-strong);
+  border-radius: var(--radius-soft);
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--color-muted-strong);
+}
+
+.page__content blockquote > :first-child {
+  margin-top: 0;
+}
+
+.page__content blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.callout {
+  --callout-accent: var(--color-link);
+  --callout-bg: rgba(142, 197, 255, 0.11);
+  --callout-border: rgba(142, 197, 255, 0.42);
+  border-color: var(--callout-border);
+  background:
+    linear-gradient(90deg, var(--callout-bg), rgba(255, 255, 255, 0.035)),
+    rgba(255, 255, 255, 0.035);
+}
+
+.callout__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+  color: var(--color-heading);
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.callout__title::before {
+  content: "";
+  display: inline-block;
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: var(--callout-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--callout-accent), transparent 78%);
+  flex: 0 0 auto;
+}
+
+.callout-warning,
+.callout-caution,
+.callout-danger,
+.callout-error {
+  --callout-accent: #f4b86a;
+  --callout-bg: rgba(244, 184, 106, 0.12);
+  --callout-border: rgba(244, 184, 106, 0.42);
+}
+
+.callout-important,
+.callout-note,
+.callout-info,
+.callout-tip {
+  --callout-accent: #8ec5ff;
+  --callout-bg: rgba(142, 197, 255, 0.11);
+  --callout-border: rgba(142, 197, 255, 0.42);
+}
+
+.callout-example,
+.callout-question,
+.callout-problem,
+.callout-help {
+  --callout-accent: #9ad6a3;
+  --callout-bg: rgba(154, 214, 163, 0.11);
+  --callout-border: rgba(154, 214, 163, 0.42);
+}
+
 .page__meta {
   display: flex;
   flex-wrap: wrap;

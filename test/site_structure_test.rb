@@ -86,4 +86,29 @@ class SiteStructureTest < Minitest::Test
       refute_includes content, "tracking_id: UA-", "#{file} should not ship a default analytics ID"
     end
   end
+
+  def test_mathjax_is_configured_for_course_notes
+    head = read("_includes/head.html")
+
+    assert_includes head, "window.MathJax"
+    assert_includes head, "inlineMath"
+    assert_includes head, "tex-mml-chtml.js"
+  end
+
+  def test_obsidian_callout_support_is_present
+    script = read("assets/js/main.js")
+    styles = read("_sass/academic.scss")
+
+    assert_includes script, "upgradeCallouts"
+    assert_includes script, "[!"
+    assert_includes styles, ".callout"
+    assert_includes styles, ".callout__title"
+  end
+
+  def test_lmfff_note_avoids_markdown_table_conflicts_in_inline_math
+    note = read("_Notes/large-models-foundations-frontiers-lecture-1.md")
+
+    refute_includes note, "$|V|$", "Use \\lvert V\\rvert so kramdown does not parse inline math as a table"
+    assert_includes note, "\\lvert V\\rvert"
+  end
 end
