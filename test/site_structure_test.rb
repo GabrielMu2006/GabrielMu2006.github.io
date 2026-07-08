@@ -111,6 +111,24 @@ class SiteStructureTest < Minitest::Test
     assert_includes styles, ".callout__title"
   end
 
+  def test_obsidian_callouts_preserve_rendered_line_breaks
+    script = read("assets/js/main.js")
+
+    refute_includes script, "first.textContent =", "Callout upgrade should preserve the rendered <br> nodes from kramdown"
+    assert_includes script, "first.innerHTML"
+  end
+
+  def test_obsidian_foldable_callouts_are_supported
+    script = read("assets/js/main.js")
+    styles = read("_sass/academic.scss")
+
+    assert_includes script, "callout--collapsible"
+    assert_includes script, "aria-expanded"
+    assert_includes script, "hidden"
+    assert_includes styles, ".callout__toggle"
+    assert_includes styles, ".callout__content"
+  end
+
   def test_lmfff_note_avoids_markdown_table_conflicts_in_inline_math
     note = read("_Notes/large-models-foundations-frontiers-lecture-1.md")
 

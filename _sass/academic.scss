@@ -267,6 +267,22 @@ samp {
   line-height: 1.35;
 }
 
+.callout__toggle {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-heading);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.callout__toggle:focus-visible {
+  outline: 2px solid var(--callout-accent);
+  outline-offset: 0.25rem;
+}
+
 .callout__title::before {
   content: "";
   display: inline-block;
@@ -276,6 +292,37 @@ samp {
   background: var(--callout-accent);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--callout-accent), transparent 78%);
   flex: 0 0 auto;
+}
+
+.callout__toggle::after {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-left: auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-0.1rem);
+  transition: transform 160ms ease;
+}
+
+.callout.is-collapsed .callout__title {
+  margin-bottom: 0;
+}
+
+.callout.is-collapsed .callout__toggle::after {
+  transform: rotate(-45deg);
+}
+
+.callout__content[hidden] {
+  display: none;
+}
+
+.callout__content > :first-child {
+  margin-top: 0;
+}
+
+.callout__content > :last-child {
+  margin-bottom: 0;
 }
 
 .callout-warning,
