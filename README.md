@@ -1,4 +1,4 @@
-# GabrielMu2006 personal site
+# Muzhi Li personal site
 
 This repository contains a lightweight Jekyll personal homepage. The information architecture keeps the AcademicPages-style sections, while the visual direction is closer to Lynn's dark, card-based personal blog.
 
@@ -20,7 +20,7 @@ bundle exec jekyll serve
 
 Then open `http://127.0.0.1:4000`.
 
-## Replace placeholders
+## Update personal information
 
 Update `_config.yml` first:
 
@@ -33,7 +33,7 @@ Update `_config.yml` first:
 - `author.email`
 - `author.github`
 
-Then replace the example Markdown entries in each collection.
+Then add your own Markdown entries to each collection.
 
 ## GitHub Pages connection
 

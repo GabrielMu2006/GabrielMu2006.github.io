@@ -2,7 +2,10 @@
   <div class="page__footer-follow">
     <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
     {% if site.author.email %}
-      <a href="mailto:{{ site.author.email }}">Email</a>
+      <a href="mailto:{{ site.author.email }}">PKU Email</a>
+    {% endif %}
+    {% if site.author.email_alt %}
+      <a href="mailto:{{ site.author.email_alt }}">Personal Email</a>
     {% endif %}
     {% if site.author.github %}
       <a href="https://github.com/{{ site.author.github }}">GitHub</a>

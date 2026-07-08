@@ -1,15 +1,15 @@
 ---
 permalink: /
 title: "Home"
-excerpt: "About Gabriel Mu"
+excerpt: "About Muzhi Li"
 author_profile: true
 hide_title: true
 ---
 
 <section class="home-hero">
   <p class="home-hero__eyebrow">Welcome</p>
-  <h1>Hi, I'm Gabriel Mu.</h1>
-  <p class="home-hero__summary">I am building a small home for notes, projects, reading, and the things I am learning in public.</p>
+  <h1>Hi, I'm Muzhi Li.</h1>
+  <p class="home-hero__summary">I study at Peking University and keep this site for notes, projects, writing, and the things I am learning in public.</p>
   <div class="home-hero__actions" aria-label="Primary links">
     <a href="{{ '/Notes/' | relative_url }}">Read notes</a>
     <a href="{{ '/Repositories/' | relative_url }}">View projects</a>
@@ -19,7 +19,7 @@ hide_title: true
 
 <section class="home-panel home-panel--intro">
   <h2>About this site</h2>
-  <p>Inspired by Lynn's personal blog style, this homepage keeps the warmth of a personal site while preserving an academic-friendly structure for notes, repositories, blogs, and links.</p>
+  <p>I am affiliated with the School of Earth and Space Sciences and the School of Electronics Engineering and Computer Science at Peking University. This homepage keeps an academic-friendly structure for notes, repositories, blogs, and links.</p>
 </section>
 
 <section class="home-section">
@@ -29,13 +29,20 @@ hide_title: true
   </div>
   <div class="home-card-list">
     {% assign recent_notes = site.Notes | sort: "date" | reverse %}
-    {% for item in recent_notes limit:3 %}
+    {% if recent_notes.size > 0 %}
+      {% for item in recent_notes limit:3 %}
+        <article class="home-card">
+          <a class="home-card__title" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+          <p class="home-card__meta">{% if item.date %}{{ item.date | date: "%Y-%m-%d" }}{% endif %}{% if item.type %} · {{ item.type }}{% endif %}</p>
+          <p>{{ item.excerpt | strip_html | normalize_whitespace | truncate: 120 }}</p>
+        </article>
+      {% endfor %}
+    {% else %}
       <article class="home-card">
-        <a class="home-card__title" href="{{ item.url | relative_url }}">{{ item.title }}</a>
-        <p class="home-card__meta">{% if item.date %}{{ item.date | date: "%Y-%m-%d" }}{% endif %}{% if item.type %} · {{ item.type }}{% endif %}</p>
-        <p>{{ item.excerpt | strip_html | normalize_whitespace | truncate: 120 }}</p>
+        <p class="home-card__title">No notes published yet.</p>
+        <p>Add Markdown files to <code>_Notes</code> when you are ready to publish course notes, reading notes, or research notes.</p>
       </article>
-    {% endfor %}
+    {% endif %}
   </div>
 </section>
 
@@ -46,13 +53,20 @@ hide_title: true
   </div>
   <div class="home-card-list">
     {% assign recent_projects = site.Repositories | sort: "date" | reverse %}
-    {% for item in recent_projects limit:3 %}
+    {% if recent_projects.size > 0 %}
+      {% for item in recent_projects limit:3 %}
+        <article class="home-card">
+          <a class="home-card__title" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+          <p class="home-card__meta">{% if item.status %}{{ item.status }}{% endif %}{% if item.link %} · <a href="{{ item.link }}">Project link</a>{% endif %}</p>
+          <p>{{ item.excerpt | strip_html | normalize_whitespace | truncate: 120 }}</p>
+        </article>
+      {% endfor %}
+    {% else %}
       <article class="home-card">
-        <a class="home-card__title" href="{{ item.url | relative_url }}">{{ item.title }}</a>
-        <p class="home-card__meta">{% if item.status %}{{ item.status }}{% endif %}{% if item.link %} · <a href="{{ item.link }}">Project link</a>{% endif %}</p>
-        <p>{{ item.excerpt | strip_html | normalize_whitespace | truncate: 120 }}</p>
+        <p class="home-card__title">No repositories listed yet.</p>
+        <p>Add Markdown files to <code>_Repositories</code> to introduce GitHub repositories, projects, and build notes.</p>
       </article>
-    {% endfor %}
+    {% endif %}
   </div>
 </section>
 
@@ -63,13 +77,20 @@ hide_title: true
   </div>
   <div class="home-card-list">
     {% assign recent_blogs = site.Blogs | sort: "date" | reverse %}
-    {% for item in recent_blogs limit:3 %}
+    {% if recent_blogs.size > 0 %}
+      {% for item in recent_blogs limit:3 %}
+        <article class="home-card">
+          <a class="home-card__title" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+          <p class="home-card__meta">{% if item.date %}{{ item.date | date: "%Y-%m-%d" }}{% endif %}{% if item.type %} · {{ item.type }}{% endif %}</p>
+          <p>{{ item.excerpt | strip_html | normalize_whitespace | truncate: 120 }}</p>
+        </article>
+      {% endfor %}
+    {% else %}
       <article class="home-card">
-        <a class="home-card__title" href="{{ item.url | relative_url }}">{{ item.title }}</a>
-        <p class="home-card__meta">{% if item.date %}{{ item.date | date: "%Y-%m-%d" }}{% endif %}{% if item.type %} · {{ item.type }}{% endif %}</p>
-        <p>{{ item.excerpt | strip_html | normalize_whitespace | truncate: 120 }}</p>
+        <p class="home-card__title">No blog posts published yet.</p>
+        <p>Add Markdown files to <code>_Blogs</code> for essays, updates, and project retrospectives.</p>
       </article>
-    {% endfor %}
+    {% endif %}
   </div>
 </section>
 
@@ -99,5 +120,7 @@ hide_title: true
 
 <section class="home-panel">
   <h2>Contact</h2>
-  <p>GitHub: <a href="https://github.com/GabrielMu2006">GabrielMu2006</a>. Add an email address in <code>_config.yml</code> when you are ready to make it public.</p>
+  <p>PKU Email: <a href="mailto:limuzhi2006@stu.pku.edu.cn">limuzhi2006@stu.pku.edu.cn</a></p>
+  <p>Personal Email: <a href="mailto:limuzhi2006@163.com">limuzhi2006@163.com</a></p>
+  <p>GitHub: <a href="https://github.com/GabrielMu2006">GabrielMu2006</a></p>
 </section>

@@ -1,8 +1,8 @@
 # Site settings
 locale: "en-US"
-title: "GabrielMu2006's site"
+title: "Muzhi Li's site"
 title_separator: "-"
-name: "Gabriel Mu"
+name: "Muzhi Li"
 description: "Personal homepage, notes, projects, writing, and links."
 url: "https://gabrielmu2006.github.io"
 baseurl: ""
@@ -21,11 +21,12 @@ analytics:
     tracking_id:
 
 author:
-  name: "Gabriel Mu"
+  name: "Muzhi Li"
   avatar: "https://avatars.githubusercontent.com/u/210809689?v=4"
-  bio: "Student, builder, and note taker"
-  location: "China"
-  email:
+  bio: "Peking University, School of Earth and Space Sciences & School of Electronics Engineering and Computer Science"
+  location: "Beijing, China"
+  email: "limuzhi2006@stu.pku.edu.cn"
+  email_alt: "limuzhi2006@163.com"
   github: "GabrielMu2006"
   wechat:
 

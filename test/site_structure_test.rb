@@ -67,15 +67,15 @@ class SiteStructureTest < Minitest::Test
     end
   end
 
-  def test_placeholder_collection_entries_exist
-    {
-      "_Notes/example-note.md" => "collection: Notes",
-      "_Repositories/example-project.md" => "collection: Repositories",
-      "_Blogs/example-post.md" => "collection: Blogs",
-      "_Links/example-link.md" => "collection: Links"
-    }.each do |relative_path, front_matter_line|
-      assert File.file?(path(relative_path)), "Expected #{relative_path} to exist"
-      assert_includes read(relative_path), front_matter_line
+  def test_collection_directories_are_ready_for_content
+    %w[
+      _Notes
+      _Repositories
+      _Blogs
+      _Links
+    ].each do |relative_path|
+      assert File.directory?(path(relative_path)), "Expected #{relative_path} to exist"
+      assert File.file?(path(relative_path, ".gitkeep")), "Expected #{relative_path}/.gitkeep to exist"
     end
   end
 
