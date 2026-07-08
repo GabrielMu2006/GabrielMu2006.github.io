@@ -1,0 +1,123 @@
+# Site settings
+locale: "en-US"
+title: "GabrielMu2006's site"
+title_separator: "-"
+name: "Gabriel Mu"
+description: "Personal homepage, notes, projects, writing, and links."
+url: "https://gabrielmu2006.github.io"
+baseurl: ""
+repository: "GabrielMu2006/GabrielMu2006.github.io"
+breadcrumbs: false
+words_per_minute: 160
+future: true
+read_more: "disabled"
+
+comments:
+  provider: false
+
+analytics:
+  provider: false
+  google:
+    tracking_id:
+
+author:
+  name: "Gabriel Mu"
+  avatar: "https://avatars.githubusercontent.com/u/210809689?v=4"
+  bio: "Student, builder, and note taker"
+  location: "China"
+  email:
+  github: "GabrielMu2006"
+  wechat:
+
+include:
+  - _pages
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - test
+  - vendor
+  - node_modules
+
+encoding: "utf-8"
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+
+markdown: kramdown
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false
+
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+
+collections:
+  Notes:
+    output: true
+    permalink: /:collection/:path/
+  Repositories:
+    output: true
+    permalink: /:collection/:path/
+  Blogs:
+    output: true
+    permalink: /:collection/:path/
+  Links:
+    output: true
+    permalink: /:collection/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+  - scope:
+      path: ""
+      type: Notes
+    values:
+      layout: single
+      author_profile: true
+      share: false
+      comments: false
+  - scope:
+      path: ""
+      type: Repositories
+    values:
+      layout: single
+      author_profile: true
+      share: false
+      comments: false
+  - scope:
+      path: ""
+      type: Blogs
+    values:
+      layout: single
+      author_profile: true
+      share: false
+      comments: false
+  - scope:
+      path: ""
+      type: Links
+    values:
+      layout: single
+      author_profile: true
+      share: false
+      comments: false
+
+permalink: /:categories/:title/
+timezone: Asia/Shanghai
+
+plugins:
+  - jekyll-feed
+
+sass:
+  sass_dir: _sass
+  style: compressed

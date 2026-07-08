@@ -1,0 +1,14 @@
+<footer class="page__footer">
+  <div class="page__footer-follow">
+    <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    {% if site.author.email %}
+      <a href="mailto:{{ site.author.email }}">Email</a>
+    {% endif %}
+    {% if site.author.github %}
+      <a href="https://github.com/{{ site.author.github }}">GitHub</a>
+    {% endif %}
+  </div>
+  <p class="page__footer-copyright">
+    Powered by Jekyll. Built from an AcademicPages-style template.
+  </p>
+</footer>

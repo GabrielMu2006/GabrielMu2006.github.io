@@ -1,0 +1,9 @@
+main:
+  - title: "Notes"
+    url: /Notes/
+  - title: "Repositories"
+    url: /Repositories/
+  - title: "Blogs"
+    url: /Blogs/
+  - title: "Links"
+    url: /Links/

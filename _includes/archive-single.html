@@ -1,0 +1,18 @@
+<article class="archive__item">
+  <h2 class="archive__item-title">
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+  </h2>
+
+  <p class="page__meta">
+    {% if post.date %}{{ post.date | date: "%B %-d, %Y" }}{% endif %}
+    {% if post.status %}<span>{{ post.status }}</span>{% endif %}
+  </p>
+
+  {% if post.excerpt %}
+    <p class="archive__item-excerpt">{{ post.excerpt | strip_html | normalize_whitespace | truncate: 180 }}</p>
+  {% endif %}
+
+  {% if post.link %}
+    <p class="archive__item-link"><a href="{{ post.link }}">Project link</a></p>
+  {% endif %}
+</article>

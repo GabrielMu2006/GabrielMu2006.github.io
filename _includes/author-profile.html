@@ -1,0 +1,31 @@
+<div class="author__avatar">
+  {% if site.author.avatar %}
+    {% if site.author.avatar contains '://' %}
+      <img src="{{ site.author.avatar }}" alt="{{ site.author.name | escape }}">
+    {% else %}
+      <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name | escape }}">
+    {% endif %}
+  {% endif %}
+</div>
+
+<div class="author__content">
+  <h3 class="author__name">{{ site.author.name }}</h3>
+  {% if site.author.bio %}
+    <p class="author__bio">{{ site.author.bio }}</p>
+  {% endif %}
+</div>
+
+<ul class="author__urls">
+  {% if site.author.location %}
+    <li>{{ site.author.location }}</li>
+  {% endif %}
+  {% if site.author.email %}
+    <li><a href="mailto:{{ site.author.email }}">Email</a></li>
+  {% endif %}
+  {% if site.author.github %}
+    <li><a href="https://github.com/{{ site.author.github }}">GitHub</a></li>
+  {% endif %}
+  {% if site.author.wechat %}
+    <li>{{ site.author.wechat }}</li>
+  {% endif %}
+</ul>

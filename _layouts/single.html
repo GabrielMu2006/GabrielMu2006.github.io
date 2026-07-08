@@ -1,0 +1,21 @@
+---
+layout: default
+---
+
+<div class="page-layout">
+  {% if page.author_profile %}
+    <aside class="sidebar sticky">
+      {% include author-profile.html %}
+    </aside>
+  {% endif %}
+
+  <article class="page">
+    {% unless page.hide_title %}
+      <h1 class="page__title">{{ page.title }}</h1>
+    {% endunless %}
+
+    <div class="page__content">
+      {{ content }}
+    </div>
+  </article>
+</div>
