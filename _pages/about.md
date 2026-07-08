@@ -19,7 +19,7 @@ hide_title: true
 
 <section class="home-panel home-panel--intro">
   <h2>About this site</h2>
-  <p>I am affiliated with the School of Earth and Space Sciences and the School of Electronics Engineering and Computer Science at Peking University. This homepage keeps an academic-friendly structure for notes, repositories, blogs, and links.</p>
+  <p>I am affiliated with SESS and EECS at Peking University. This homepage keeps an academic-friendly structure for notes, repositories, blogs, and links.</p>
 </section>
 
 <section class="home-section">
