@@ -41,6 +41,12 @@ class SiteStructureTest < Minitest::Test
     end
   end
 
+  def test_markdown_preserves_obsidian_style_line_breaks
+    config = YAML.safe_load(read("_config.yml"), aliases: true)
+
+    assert_equal true, config.dig("kramdown", "hard_wrap")
+  end
+
   def test_navigation_links_match_public_pages
     navigation = YAML.safe_load(read("_data/navigation.yml"), aliases: true)
     links = navigation.fetch("main").map { |item| [item.fetch("title"), item.fetch("url")] }
@@ -110,5 +116,46 @@ class SiteStructureTest < Minitest::Test
 
     refute_includes note, "$|V|$", "Use \\lvert V\\rvert so kramdown does not parse inline math as a table"
     assert_includes note, "\\lvert V\\rvert"
+  end
+
+  def test_lmfff_display_math_blocks_are_isolated
+    lines = read("_Notes/large-models-foundations-frontiers-lecture-1.md").lines.map(&:chomp)
+    in_math = false
+
+    lines.each_with_index do |line, index|
+      refute_match(/\A>?\s*\$\$.+\$\$\s*\z/, line.strip,
+                   "Expected display math on line #{index + 1} to use multiline fences")
+      next unless line.strip == "$$" || line.strip == "> $$"
+
+      if in_math
+        following = lines[index + 1].to_s.strip
+        assert ["", ">"].include?(following),
+               "Expected blank line after closing display math fence at line #{index + 1}"
+        in_math = false
+      else
+        previous = lines[index - 1].to_s.strip
+        assert ["", ">"].include?(previous),
+               "Expected blank line before opening display math fence at line #{index + 1}"
+        in_math = true
+      end
+    end
+
+    refute in_math, "Expected display math fences to be balanced"
+  end
+
+  def test_lmfff_plain_text_does_not_continue_list_items
+    lines = read("_Notes/large-models-foundations-frontiers-lecture-1.md").lines.map(&:chomp)
+
+    lines.each_cons(2).with_index do |(previous, current), index|
+      previous_text = previous.strip
+      current_text = current.strip
+      next unless previous_text.match?(/\A(?:[-*+] |\d+\. )/)
+      next if current_text.empty?
+      next if current.match?(/\A\s+\S/)
+      next if current_text.match?(/\A(?:[-*+] |\d+\. )/)
+      next if current_text.start_with?(">", "#", "|", "$$", "```")
+
+      flunk "Expected blank line between list item at line #{index + 1} and plain text at line #{index + 2}"
+    end
   end
 end
