@@ -17,11 +17,6 @@ hide_title: true
   </div>
 </section>
 
-<section class="home-panel home-panel--intro">
-  <h2>A working notebook</h2>
-  <p>I am affiliated with SESS and EECS at Peking University. I use this homepage less as a polished portfolio and more as a durable desk: course notes while ideas are fresh, repositories when code starts to take shape, and links I may need again.</p>
-</section>
-
 <section class="home-section">
   <div class="home-section__header">
     <h2>Recently updated notes</h2>

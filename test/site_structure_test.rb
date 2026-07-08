@@ -135,8 +135,9 @@ class SiteStructureTest < Minitest::Test
     refute_includes homepage, "No blog posts published yet."
     refute_includes homepage, "Add Markdown files"
     refute_includes homepage, "_Blogs"
+    refute_includes homepage, "home-panel--intro"
+    refute_includes homepage, "A working notebook"
     assert_includes homepage, "SESS x EECS"
-    assert_includes homepage, "A working notebook"
     assert_includes homepage, "Longer writing is still in the margins."
   end
 
