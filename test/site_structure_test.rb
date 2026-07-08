@@ -129,6 +129,17 @@ class SiteStructureTest < Minitest::Test
     assert_includes styles, ".callout__content"
   end
 
+  def test_homepage_uses_personal_empty_states
+    homepage = read("_pages/about.md")
+
+    refute_includes homepage, "No blog posts published yet."
+    refute_includes homepage, "Add Markdown files"
+    refute_includes homepage, "_Blogs"
+    assert_includes homepage, "SESS x EECS"
+    assert_includes homepage, "A working notebook"
+    assert_includes homepage, "Longer writing is still in the margins."
+  end
+
   def test_lmfff_note_avoids_markdown_table_conflicts_in_inline_math
     note = read("_Notes/large-models-foundations-frontiers-lecture-1.md")
 

@@ -7,9 +7,9 @@ hide_title: true
 ---
 
 <section class="home-hero">
-  <p class="home-hero__eyebrow">Welcome</p>
-  <h1>Hi, I'm Muzhi Li.</h1>
-  <p class="home-hero__summary">I study at Peking University and keep this site for notes, projects, writing, and the things I am learning in public.</p>
+  <p class="home-hero__eyebrow">SESS x EECS · Peking University</p>
+  <h1>Muzhi Li</h1>
+  <p class="home-hero__summary">I am learning across earth science, computation, and large-model systems. This site keeps the notes, code, and references I want to return to.</p>
   <div class="home-hero__actions" aria-label="Primary links">
     <a href="{{ '/Notes/' | relative_url }}">Read notes</a>
     <a href="{{ '/Repositories/' | relative_url }}">View projects</a>
@@ -18,8 +18,8 @@ hide_title: true
 </section>
 
 <section class="home-panel home-panel--intro">
-  <h2>About this site</h2>
-  <p>I am affiliated with SESS and EECS at Peking University. This homepage keeps an academic-friendly structure for notes, repositories, blogs, and links.</p>
+  <h2>A working notebook</h2>
+  <p>I am affiliated with SESS and EECS at Peking University. I use this homepage less as a polished portfolio and more as a durable desk: course notes while ideas are fresh, repositories when code starts to take shape, and links I may need again.</p>
 </section>
 
 <section class="home-section">
@@ -39,8 +39,8 @@ hide_title: true
       {% endfor %}
     {% else %}
       <article class="home-card">
-        <p class="home-card__title">No notes published yet.</p>
-        <p>Add Markdown files to <code>_Notes</code> when you are ready to publish course notes, reading notes, or research notes.</p>
+        <p class="home-card__title">No public notes on the shelf yet.</p>
+        <p>Course notes, reading notes, and research fragments will appear here once they are worth keeping in public.</p>
       </article>
     {% endif %}
   </div>
@@ -63,8 +63,8 @@ hide_title: true
       {% endfor %}
     {% else %}
       <article class="home-card">
-        <p class="home-card__title">No repositories listed yet.</p>
-        <p>Add Markdown files to <code>_Repositories</code> to introduce GitHub repositories, projects, and build notes.</p>
+        <p class="home-card__title">No project notes selected yet.</p>
+        <p>Repositories that carry a useful idea, tool, or build log will be linked here.</p>
       </article>
     {% endif %}
   </div>
@@ -72,8 +72,8 @@ hide_title: true
 
 <section class="home-section">
   <div class="home-section__header">
-    <h2>Latest writing</h2>
-    <a href="{{ '/Blogs/' | relative_url }}">All blogs</a>
+    <h2>Longer writing</h2>
+    <a href="{{ '/Blogs/' | relative_url }}">Blog archive</a>
   </div>
   <div class="home-card-list">
     {% assign recent_blogs = site.Blogs | sort: "date" | reverse %}
@@ -87,8 +87,8 @@ hide_title: true
       {% endfor %}
     {% else %}
       <article class="home-card">
-        <p class="home-card__title">No blog posts published yet.</p>
-        <p>Add Markdown files to <code>_Blogs</code> for essays, updates, and project retrospectives.</p>
+        <p class="home-card__title">Longer writing is still in the margins.</p>
+        <p>For now, I am letting longer pieces earn their place. The fresher trail is in Notes and project writeups.</p>
       </article>
     {% endif %}
   </div>
