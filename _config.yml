@@ -18,9 +18,9 @@ comments:
 guestbook:
   provider: "giscus"
   repo: "GabrielMu2006/GabrielMu2006.github.io"
-  repo_id:
+  repo_id: "R_kgDOTRD7fw"
   category: "Guestbook"
-  category_id:
+  category_id: "DIC_kwDOTRD7f84DA1RK"
   mapping: "pathname"
   strict: "0"
   reactions_enabled: "1"
