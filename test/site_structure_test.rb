@@ -152,7 +152,8 @@ class SiteStructureTest < Minitest::Test
     assert_equal "giscus", guestbook.fetch("provider")
     assert_equal "GabrielMu2006/GabrielMu2006.github.io", guestbook.fetch("repo")
     assert_equal "Guestbook", guestbook.fetch("category")
-    assert_equal "pathname", guestbook.fetch("mapping")
+    assert_equal "specific", guestbook.fetch("mapping")
+    assert_equal "Guestbook", guestbook.fetch("term")
     assert_equal "transparent_dark", guestbook.fetch("theme")
     assert_equal "en", guestbook.fetch("lang")
   end
@@ -167,7 +168,17 @@ class SiteStructureTest < Minitest::Test
     assert_includes include, "https://giscus.app/client.js"
     assert_includes include, "site.guestbook.repo_id"
     assert_includes include, "site.guestbook.category_id"
+    assert_includes include, "site.guestbook.term"
+    assert_includes include, "data-term="
     assert_includes include, "Guestbook setup pending"
+  end
+
+  def test_homepage_embeds_guestbook_writer
+    homepage = read("_pages/about.md")
+
+    assert_includes homepage, "Leave a note"
+    assert_includes homepage, "Read guestbook"
+    assert_includes homepage, "guestbook-giscus.html"
   end
 
   def test_lmfff_note_avoids_markdown_table_conflicts_in_inline_math

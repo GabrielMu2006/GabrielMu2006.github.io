@@ -112,6 +112,15 @@ hide_title: true
   </a>
 </section>
 
+<section class="home-section home-guestbook" aria-labelledby="home-guestbook-title">
+  <div class="home-section__header">
+    <h2 id="home-guestbook-title">Leave a note</h2>
+    <a href="{{ '/Guestbook/' | relative_url }}">Read guestbook</a>
+  </div>
+  <p class="home-guestbook__intro">Write a quick message here. It will appear in the same Guestbook thread.</p>
+  {% include guestbook-giscus.html %}
+</section>
+
 <section class="home-panel">
   <h2>Pageviews</h2>
   <p>Analytics are not enabled by default. Add your visitor map or tracking snippet here after you choose a provider.</p>

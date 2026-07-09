@@ -7,6 +7,7 @@
           data-category="{{ site.guestbook.category }}"
           data-category-id="{{ site.guestbook.category_id }}"
           data-mapping="{{ site.guestbook.mapping | default: 'pathname' }}"
+          {% if site.guestbook.term %}data-term="{{ site.guestbook.term }}"{% endif %}
           data-strict="{{ site.guestbook.strict | default: '0' }}"
           data-reactions-enabled="{{ site.guestbook.reactions_enabled | default: '1' }}"
           data-emit-metadata="{{ site.guestbook.emit_metadata | default: '0' }}"

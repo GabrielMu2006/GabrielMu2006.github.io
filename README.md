@@ -40,6 +40,8 @@ Then add your own Markdown entries to each collection.
 
 The `/Guestbook/` page is wired for [Giscus](https://giscus.app/), a comments system powered by [GitHub Discussions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/enabling-or-disabling-github-discussions-for-a-repository). Until the repository and category IDs are configured, the page shows a setup notice instead of a broken comment box.
 
+The homepage writer and `/Guestbook/` share one fixed Giscus thread through `guestbook.mapping: specific` and `guestbook.term: Guestbook`, so messages written on the homepage are visible in the guestbook.
+
 To enable public messages:
 
 1. Make sure `GabrielMu2006/GabrielMu2006.github.io` is public.
