@@ -36,6 +36,11 @@ analytics:
   google:
     tracking_id:
 
+pageviews:
+  provider: "busuanzi"
+  enabled: true
+  script_src: "https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"
+
 author:
   name: "Muzhi Li"
   avatar: "/assets/images/avatar.jpg"

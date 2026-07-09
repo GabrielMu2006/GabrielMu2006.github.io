@@ -51,6 +51,10 @@ To enable public messages:
 5. Use [Giscus](https://giscus.app/) to generate the repository ID and category ID.
 6. Fill `guestbook.repo_id` and `guestbook.category_id` in `_config.yml`.
 
+## Pageviews
+
+The author sidebar shows a single site pageview number below the avatar. It is powered by Busuanzi and configured in `_config.yml` under `pageviews`. Set `pageviews.enabled: false` to hide it.
+
 ## GitHub Pages connection
 
 The site is configured for the standard user Pages repository:

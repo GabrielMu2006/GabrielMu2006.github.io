@@ -153,6 +153,17 @@ samp {
   object-fit: cover;
 }
 
+.author__pageviews {
+  width: 176px;
+  min-height: 1.4rem;
+  margin: -0.35rem 0 1rem;
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+  text-align: center;
+}
+
 .author__content,
 .author__urls {
   width: min(100%, 230px);
@@ -667,6 +678,10 @@ samp {
   .author__avatar {
     width: 128px;
     height: 128px;
+  }
+
+  .author__pageviews {
+    width: 128px;
   }
 
   .home-link-grid {

@@ -137,6 +137,8 @@ class SiteStructureTest < Minitest::Test
     refute_includes homepage, "No blog posts published yet."
     refute_includes homepage, "Add Markdown files"
     refute_includes homepage, "_Blogs"
+    refute_includes homepage, "Pageviews"
+    refute_includes homepage, "Analytics are not enabled by default"
     refute_includes homepage, "home-panel--intro"
     refute_includes homepage, "A working notebook"
     assert_includes homepage, "SESS x EECS"
@@ -179,6 +181,25 @@ class SiteStructureTest < Minitest::Test
     assert_includes homepage, "Leave a note"
     assert_includes homepage, "Read guestbook"
     assert_includes homepage, "guestbook-giscus.html"
+  end
+
+  def test_pageview_counter_is_configured_for_author_sidebar
+    config = YAML.safe_load(read("_config.yml"), aliases: true)
+    pageviews = config.fetch("pageviews")
+    head = read("_includes/head.html")
+    author_profile = read("_includes/author-profile.html")
+    styles = read("_sass/academic.scss")
+
+    assert_equal "busuanzi", pageviews.fetch("provider")
+    assert_equal true, pageviews.fetch("enabled")
+    assert_includes pageviews.fetch("script_src"), "busuanzi.pure.mini.js"
+
+    assert_includes head, "site.pageviews.enabled"
+    assert_includes head, "site.pageviews.script_src"
+    assert_includes author_profile, "author__pageviews"
+    assert_includes author_profile, "busuanzi_value_site_pv"
+    refute_includes author_profile, ">Pageviews<"
+    assert_includes styles, ".author__pageviews"
   end
 
   def test_lmfff_note_avoids_markdown_table_conflicts_in_inline_math

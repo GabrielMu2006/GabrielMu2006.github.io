@@ -8,6 +8,12 @@
   {% endif %}
 </div>
 
+{% if site.pageviews.enabled and site.pageviews.provider == "busuanzi" %}
+  <div class="author__pageviews" aria-label="Site pageviews">
+    <span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv"></span></span>
+  </div>
+{% endif %}
+
 <div class="author__content">
   <h3 class="author__name">{{ site.author.name }}</h3>
   {% if site.author.bio %}

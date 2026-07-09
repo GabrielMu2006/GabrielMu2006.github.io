@@ -122,11 +122,6 @@ hide_title: true
 </section>
 
 <section class="home-panel">
-  <h2>Pageviews</h2>
-  <p>Analytics are not enabled by default. Add your visitor map or tracking snippet here after you choose a provider.</p>
-</section>
-
-<section class="home-panel">
   <h2>Contact</h2>
   <p>PKU Email: <a href="mailto:limuzhi2006@stu.pku.edu.cn">limuzhi2006@stu.pku.edu.cn</a></p>
   <p>Personal Email: <a href="mailto:limuzhi2006@163.com">limuzhi2006@163.com</a></p>
