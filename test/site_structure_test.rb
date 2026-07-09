@@ -198,6 +198,7 @@ class SiteStructureTest < Minitest::Test
     assert_includes head, "site.pageviews.script_src"
     assert_includes author_profile, "author__pageviews"
     assert_includes author_profile, "busuanzi_value_site_pv"
+    assert_operator author_profile.index("author__urls"), :<, author_profile.index("author__pageviews")
     refute_includes author_profile, ">Pageviews<"
     assert_includes styles, ".author__pageviews"
   end

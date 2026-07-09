@@ -53,7 +53,7 @@ To enable public messages:
 
 ## Pageviews
 
-The author sidebar shows a single site pageview number below the avatar. It is powered by Busuanzi and configured in `_config.yml` under `pageviews`. Set `pageviews.enabled: false` to hide it.
+The author sidebar shows a single site pageview number below the author links. It is powered by Busuanzi and configured in `_config.yml` under `pageviews`. Set `pageviews.enabled: false` to hide it.
 
 ## GitHub Pages connection
 
