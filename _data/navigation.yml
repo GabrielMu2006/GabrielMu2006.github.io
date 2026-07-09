@@ -5,5 +5,7 @@ main:
     url: /Repositories/
   - title: "Blogs"
     url: /Blogs/
+  - title: "Guestbook"
+    url: /Guestbook/
   - title: "Links"
     url: /Links/

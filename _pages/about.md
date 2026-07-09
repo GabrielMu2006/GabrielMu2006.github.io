@@ -102,6 +102,10 @@ hide_title: true
     <span>Blogs</span>
     <small>Long-form writing and occasional updates.</small>
   </a>
+  <a href="{{ '/Guestbook/' | relative_url }}">
+    <span>Guestbook</span>
+    <small>Leave a note, question, or small hello.</small>
+  </a>
   <a href="{{ '/Links/' | relative_url }}">
     <span>Links</span>
     <small>Useful sites, friends, and references.</small>

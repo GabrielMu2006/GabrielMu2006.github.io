@@ -1,0 +1,26 @@
+{% if site.guestbook.provider == "giscus" and site.guestbook.repo_id and site.guestbook.category_id %}
+<section class="guestbook-thread" aria-label="Guestbook messages">
+  <div class="giscus"></div>
+  <script src="https://giscus.app/client.js"
+          data-repo="{{ site.guestbook.repo }}"
+          data-repo-id="{{ site.guestbook.repo_id }}"
+          data-category="{{ site.guestbook.category }}"
+          data-category-id="{{ site.guestbook.category_id }}"
+          data-mapping="{{ site.guestbook.mapping | default: 'pathname' }}"
+          data-strict="{{ site.guestbook.strict | default: '0' }}"
+          data-reactions-enabled="{{ site.guestbook.reactions_enabled | default: '1' }}"
+          data-emit-metadata="{{ site.guestbook.emit_metadata | default: '0' }}"
+          data-input-position="{{ site.guestbook.input_position | default: 'top' }}"
+          data-theme="{{ site.guestbook.theme | default: 'transparent_dark' }}"
+          data-lang="{{ site.guestbook.lang | default: 'en' }}"
+          data-loading="{{ site.guestbook.loading | default: 'lazy' }}"
+          crossorigin="anonymous"
+          async>
+  </script>
+</section>
+{% else %}
+<section class="guestbook-setup" aria-label="Guestbook setup notice">
+  <h2>Guestbook setup pending</h2>
+  <p>This page is ready for GitHub Discussions. Enable Discussions, install Giscus, create or choose the Guestbook category, then add <code>repo_id</code> and <code>category_id</code> in <code>_config.yml</code>.</p>
+</section>
+{% endif %}

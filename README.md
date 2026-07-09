@@ -8,6 +8,7 @@ This repository contains a lightweight Jekyll personal homepage. The information
 - `_data/navigation.yml`: top navigation links.
 - `_pages/about.md`: public homepage at `/`.
 - `_pages/Notes.md`, `_pages/Repositories.md`, `_pages/Blogs.md`, `_pages/Links.md`: collection archive pages.
+- `_pages/Guestbook.md`: public guestbook page at `/Guestbook/`.
 - `_Notes`, `_Repositories`, `_Blogs`, `_Links`: Markdown entries managed with front matter.
 - `_layouts`, `_includes`, `_sass`, `assets`: local theme structure.
 
@@ -34,6 +35,19 @@ Update `_config.yml` first:
 - `author.github`
 
 Then add your own Markdown entries to each collection.
+
+## Guestbook setup
+
+The `/Guestbook/` page is wired for [Giscus](https://giscus.app/), a comments system powered by [GitHub Discussions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/enabling-or-disabling-github-discussions-for-a-repository). Until the repository and category IDs are configured, the page shows a setup notice instead of a broken comment box.
+
+To enable public messages:
+
+1. Make sure `GabrielMu2006/GabrielMu2006.github.io` is public.
+2. Enable GitHub Discussions in the repository settings.
+3. Install or configure the Giscus GitHub app for this repository.
+4. Create or choose a discussion category named `Guestbook`.
+5. Use [Giscus](https://giscus.app/) to generate the repository ID and category ID.
+6. Fill `guestbook.repo_id` and `guestbook.category_id` in `_config.yml`.
 
 ## GitHub Pages connection
 

@@ -26,6 +26,7 @@ class SiteStructureTest < Minitest::Test
       _pages/Repositories.md
       _pages/Blogs.md
       _pages/Links.md
+      _pages/Guestbook.md
     ].each do |relative_path|
       assert File.file?(path(relative_path)), "Expected #{relative_path} to exist"
     end
@@ -55,6 +56,7 @@ class SiteStructureTest < Minitest::Test
       ["Notes", "/Notes/"],
       ["Repositories", "/Repositories/"],
       ["Blogs", "/Blogs/"],
+      ["Guestbook", "/Guestbook/"],
       ["Links", "/Links/"]
     ], links
   end
@@ -139,6 +141,33 @@ class SiteStructureTest < Minitest::Test
     refute_includes homepage, "A working notebook"
     assert_includes homepage, "SESS x EECS"
     assert_includes homepage, "Longer writing is still in the margins."
+    assert_includes homepage, "Guestbook"
+    assert_includes homepage, "/Guestbook/"
+  end
+
+  def test_guestbook_giscus_configuration_is_present
+    config = YAML.safe_load(read("_config.yml"), aliases: true)
+    guestbook = config.fetch("guestbook")
+
+    assert_equal "giscus", guestbook.fetch("provider")
+    assert_equal "GabrielMu2006/GabrielMu2006.github.io", guestbook.fetch("repo")
+    assert_equal "Guestbook", guestbook.fetch("category")
+    assert_equal "pathname", guestbook.fetch("mapping")
+    assert_equal "transparent_dark", guestbook.fetch("theme")
+    assert_equal "en", guestbook.fetch("lang")
+  end
+
+  def test_guestbook_page_uses_safe_giscus_fallback
+    page = read("_pages/Guestbook.md")
+    include = read("_includes/guestbook-giscus.html")
+
+    assert_includes page, "title: \"Guestbook\""
+    assert_includes page, "permalink: /Guestbook/"
+    assert_includes page, "guestbook-giscus.html"
+    assert_includes include, "https://giscus.app/client.js"
+    assert_includes include, "site.guestbook.repo_id"
+    assert_includes include, "site.guestbook.category_id"
+    assert_includes include, "Guestbook setup pending"
   end
 
   def test_lmfff_note_avoids_markdown_table_conflicts_in_inline_math

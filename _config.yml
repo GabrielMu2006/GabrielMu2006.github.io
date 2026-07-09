@@ -15,6 +15,21 @@ read_more: "disabled"
 comments:
   provider: false
 
+guestbook:
+  provider: "giscus"
+  repo: "GabrielMu2006/GabrielMu2006.github.io"
+  repo_id:
+  category: "Guestbook"
+  category_id:
+  mapping: "pathname"
+  strict: "0"
+  reactions_enabled: "1"
+  emit_metadata: "0"
+  input_position: "top"
+  theme: "transparent_dark"
+  lang: "en"
+  loading: "lazy"
+
 analytics:
   provider: false
   google:
