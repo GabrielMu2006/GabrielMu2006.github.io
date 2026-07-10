@@ -62,12 +62,14 @@ The author sidebar shows a single site pageview number below the author links. I
 
 ## GitHub Pages connection
 
-The site is configured for the standard user Pages repository:
+The site remains hosted by the standard user Pages repository and uses a custom domain:
 
 - GitHub user: `GabrielMu2006`
-- Expected repository: `GabrielMu2006/GabrielMu2006.github.io`
-- Expected site URL: `https://gabrielmu2006.github.io`
+- Repository: `GabrielMu2006/GabrielMu2006.github.io`
+- Public site URL: `https://gabrielmu2006.cn`
+- Default Pages URL: `https://gabrielmu2006.github.io` (redirects to the custom domain)
+- Custom domain declaration: root-level `CNAME`
 
-If the repository does not exist yet, create a public repository named `GabrielMu2006.github.io` on GitHub. Then push this local repository to `origin` and enable Pages from the repository settings if GitHub does not enable it automatically.
+The Alibaba Cloud DNS zone for `gabrielmu2006.cn` should contain four `A` records at `@`, pointing to `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, and `185.199.111.153`. It should also contain a `CNAME` record at `www` pointing directly to `GabrielMu2006.github.io`.
 
-Add a `CNAME` file later if you connect a custom domain.
+GitHub Pages remains the host. The apex domain is canonical, while the `www` variant redirects to it. Enable **Enforce HTTPS** in the repository Pages settings after GitHub finishes issuing the certificate.

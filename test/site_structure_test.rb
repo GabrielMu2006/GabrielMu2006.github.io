@@ -50,6 +50,14 @@ class SiteStructureTest < Minitest::Test
     assert_includes agents, "CONTENT_WORKFLOW.md"
   end
 
+  def test_custom_domain_is_canonical
+    config = YAML.safe_load(read("_config.yml"), aliases: true)
+
+    assert_equal "https://gabrielmu2006.cn", config.fetch("url")
+    assert_equal "", config.fetch("baseurl")
+    assert_equal "gabrielmu2006.cn", read("CNAME").strip
+  end
+
   def test_collections_are_configured
     config = YAML.safe_load(read("_config.yml"), aliases: true)
     collections = config.fetch("collections")
