@@ -32,6 +32,24 @@ class SiteStructureTest < Minitest::Test
     end
   end
 
+  def test_content_publishing_workflow_is_documented_for_future_sessions
+    workflow = read("CONTENT_WORKFLOW.md")
+    agents = read("AGENTS.md")
+
+    %w[_Notes _Blogs _Repositories].each do |collection|
+      assert_includes workflow, collection
+    end
+
+    %w[title collection type permalink date status].each do |field|
+      assert_includes workflow, field
+    end
+
+    assert_includes workflow, "ruby test/site_structure_test.rb"
+    assert_includes workflow, "bundle exec jekyll build"
+    assert_includes workflow, "git push origin main"
+    assert_includes agents, "CONTENT_WORKFLOW.md"
+  end
+
   def test_collections_are_configured
     config = YAML.safe_load(read("_config.yml"), aliases: true)
     collections = config.fetch("collections")

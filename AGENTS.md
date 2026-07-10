@@ -2,6 +2,8 @@
 
 Before starting future work in this repository, read this file first.
 
+For any Note, Blog, or Repository upload, also read `CONTENT_WORKFLOW.md` completely before editing. It is the canonical step-by-step publishing guide and includes reusable prompts for new Codex chats.
+
 ## General Rules
 
 - Work from `/Users/gabrielmu/Documents/个人网页`.

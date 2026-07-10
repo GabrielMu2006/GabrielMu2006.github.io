@@ -11,6 +11,7 @@ This repository contains a lightweight Jekyll personal homepage. The information
 - `_pages/Guestbook.md`: public guestbook page at `/Guestbook/`.
 - `_Notes`, `_Repositories`, `_Blogs`, `_Links`: Markdown entries managed with front matter.
 - `_layouts`, `_includes`, `_sass`, `assets`: local theme structure.
+- `CONTENT_WORKFLOW.md`: step-by-step publishing guide for Notes, Blogs, and Repository entries.
 
 ## Local development
 
@@ -35,6 +36,10 @@ Update `_config.yml` first:
 - `author.github`
 
 Then add your own Markdown entries to each collection.
+
+## Publish site content
+
+See [`CONTENT_WORKFLOW.md`](CONTENT_WORKFLOW.md) for the complete workflow for importing Notes, publishing Blogs, and connecting GitHub repositories. It includes exact front matter templates, Obsidian callout and math rules, verification commands, Git publishing steps, and prompts that can be reused in a fresh Codex chat.
 
 ## Guestbook setup
 
