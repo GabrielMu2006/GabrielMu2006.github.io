@@ -1,4 +1,5 @@
 require "minitest/autorun"
+require "date"
 require "yaml"
 
 class SiteStructureTest < Minitest::Test
@@ -56,6 +57,20 @@ class SiteStructureTest < Minitest::Test
     assert_equal "https://gabrielmu2006.cn", config.fetch("url")
     assert_equal "", config.fetch("baseurl")
     assert_equal "gabrielmu2006.cn", read("CNAME").strip
+  end
+
+  def test_blog_permalinks_are_unique
+    permalinks = Dir.glob(path("_Blogs", "*.md")).map do |file|
+      content = File.read(file)
+      front_matter = content.match(/\A---\s*\n(.*?)\n---\s*\n/m)
+      refute_nil front_matter, "Expected #{File.basename(file)} to have YAML front matter"
+
+      YAML.safe_load(front_matter[1], permitted_classes: [Date], aliases: true).fetch("permalink")
+    end
+
+    counts = permalinks.each_with_object(Hash.new(0)) { |permalink, result| result[permalink] += 1 }
+    duplicates = counts.select { |_permalink, count| count > 1 }.keys
+    assert_empty duplicates, "Duplicate Blog permalinks: #{duplicates.join(', ')}"
   end
 
   def test_collections_are_configured

@@ -2,7 +2,7 @@
 title: "PaperPulse项目进度"
 collection: Blogs
 type: "Project sync"
-permalink: /Blogs/personal-site-launch/
+permalink: /Blogs/project-sync-260711/
 date: 2026-07-11
 status: "Published"
 ---
