@@ -1,5 +1,5 @@
 ---
-title: "PaperPulse项目进度"
+title: "PaperPulse项目进度1"
 collection: Blogs
 type: "Project sync"
 permalink: /Blogs/project-sync-260711/
