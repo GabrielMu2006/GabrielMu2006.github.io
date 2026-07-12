@@ -9,6 +9,7 @@ Long-form writing and occasional updates. Less polished than papers, more durabl
 
 {% include base_path %}
 
-{% for post in site.Blogs reversed %}
+{% assign sorted_blogs = site.Blogs | sort: "date" | reverse %}
+{% for post in sorted_blogs %}
   {% include archive-single.html %}
 {% endfor %}
