@@ -71,7 +71,7 @@ hide_title: true
     <a href="{{ '/Blogs/' | relative_url }}">Blog archive</a>
   </div>
   <div class="home-card-list">
-    {% assign recent_blogs = site.Blogs | sort: "date" | reverse %}
+    {% assign recent_blogs = site.Blogs | sort: "order" | reverse %}
     {% if recent_blogs.size > 0 %}
       {% for item in recent_blogs limit:3 %}
         <article class="home-card">

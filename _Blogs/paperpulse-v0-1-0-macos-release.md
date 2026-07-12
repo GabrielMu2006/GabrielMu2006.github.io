@@ -4,6 +4,7 @@ collection: Blogs
 type: "Release"
 permalink: /Blogs/paperpulse-v0-1-0-macos-release/
 date: 2026-07-12
+order: 4
 status: "Published"
 ---
 

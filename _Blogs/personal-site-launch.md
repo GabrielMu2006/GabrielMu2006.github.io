@@ -4,6 +4,7 @@ collection: Blogs
 type: "Site update"
 permalink: /Blogs/personal-site-launch/
 date: 2026-07-09
+order: 1
 status: "Published"
 ---
 

@@ -4,6 +4,7 @@ collection: Blogs
 type: "Project sync"
 permalink: /Blogs/project-sync-260711/
 date: 2026-07-11
+order: 2
 status: "Published"
 ---
 
