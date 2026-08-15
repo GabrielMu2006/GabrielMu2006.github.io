@@ -34,21 +34,24 @@ class SiteStructureTest < Minitest::Test
   end
 
   def test_content_publishing_workflow_is_documented_for_future_sessions
-    workflow = read("CONTENT_WORKFLOW.md")
-    agents = read("AGENTS.md")
+    guide = read("AGENTS.md")
 
     %w[_Notes _Blogs _Repositories].each do |collection|
-      assert_includes workflow, collection
+      assert_includes guide, collection
     end
 
     %w[title collection type permalink date status].each do |field|
-      assert_includes workflow, field
+      assert_includes guide, field
     end
 
-    assert_includes workflow, "ruby test/site_structure_test.rb"
-    assert_includes workflow, "bundle exec jekyll build"
-    assert_includes workflow, "git push origin main"
-    assert_includes agents, "CONTENT_WORKFLOW.md"
+    assert_includes guide, "# 中文"
+    assert_includes guide, "# English"
+    assert_includes guide, "order"
+    assert_includes guide, "codex/update-homepage-style"
+    assert_includes guide, "ruby test/site_structure_test.rb"
+    assert_includes guide, "bundle exec jekyll build"
+    assert_includes guide, "git push origin main"
+    refute File.exist?(path("CONTENT_WORKFLOW.md")), "Publishing rules should live only in AGENTS.md"
   end
 
   def test_custom_domain_is_canonical
