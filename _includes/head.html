@@ -21,4 +21,4 @@
 {% if site.pageviews.enabled and site.pageviews.provider == "busuanzi" %}
   <script async src="{{ site.pageviews.script_src }}"></script>
 {% endif %}
-{% feed_meta %}
+<link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | absolute_url }}">

@@ -4,6 +4,9 @@ require "yaml"
 
 class SiteStructureTest < Minitest::Test
   ROOT = File.expand_path("..", __dir__)
+  COLLECTIONS = %w[Notes Repositories Blogs Links].freeze
+  PUBLISHING_COLLECTIONS = %w[Notes Repositories Blogs].freeze
+  COLLECTION_FIELDS = %w[title collection type permalink date status].freeze
 
   def path(*parts)
     File.join(ROOT, *parts)
@@ -15,12 +18,29 @@ class SiteStructureTest < Minitest::Test
     File.read(target)
   end
 
+  def front_matter(relative_path)
+    content = read(relative_path)
+    match = content.match(/\A---\s*\n(.*?)\n---\s*\n/m)
+    refute_nil match, "Expected #{relative_path} to have YAML front matter"
+
+    YAML.safe_load(match[1], permitted_classes: [Date], aliases: true)
+  end
+
+  def collection_entry_paths(collections = COLLECTIONS)
+    collections.flat_map do |collection|
+      Dir.glob(path("_#{collection}", "*.md")).sort.map do |file|
+        file.delete_prefix("#{ROOT}/")
+      end
+    end
+  end
+
   def test_core_jekyll_files_exist
     %w[
       _config.yml
       Gemfile
       index.html
       README.md
+      docs/README.md
       _data/navigation.yml
       _pages/about.md
       _pages/Notes.md
@@ -62,18 +82,59 @@ class SiteStructureTest < Minitest::Test
     assert_equal "gabrielmu2006.cn", read("CNAME").strip
   end
 
-  def test_blog_permalinks_are_unique
-    permalinks = Dir.glob(path("_Blogs", "*.md")).map do |file|
-      content = File.read(file)
-      front_matter = content.match(/\A---\s*\n(.*?)\n---\s*\n/m)
-      refute_nil front_matter, "Expected #{File.basename(file)} to have YAML front matter"
+  def test_collection_entries_follow_the_publishing_contract
+    collection_entry_paths(PUBLISHING_COLLECTIONS).each do |relative_path|
+      data = front_matter(relative_path)
+      collection = File.dirname(relative_path).delete_prefix("_")
+      slug = File.basename(relative_path, ".md")
 
-      YAML.safe_load(front_matter[1], permitted_classes: [Date], aliases: true).fetch("permalink")
+      COLLECTION_FIELDS.each do |field|
+        assert data.key?(field), "Expected #{relative_path} to define #{field}"
+        refute_empty data.fetch(field).to_s.strip, "Expected #{relative_path} #{field} to be non-empty"
+      end
+
+      assert_equal collection, data.fetch("collection"), "Collection mismatch in #{relative_path}"
+      assert_equal "/#{collection}/#{slug}/", data.fetch("permalink"), "Permalink mismatch in #{relative_path}"
+      assert_kind_of Date, data.fetch("date"), "Expected #{relative_path} date to use YYYY-MM-DD"
     end
+  end
 
+  def test_public_permalinks_are_unique
+    source_paths = collection_entry_paths + Dir.glob(path("_pages", "*.md")).sort.map do |file|
+      file.delete_prefix("#{ROOT}/")
+    end
+    permalinks = source_paths.map { |relative_path| front_matter(relative_path).fetch("permalink") }
     counts = permalinks.each_with_object(Hash.new(0)) { |permalink, result| result[permalink] += 1 }
     duplicates = counts.select { |_permalink, count| count > 1 }.keys
-    assert_empty duplicates, "Duplicate Blog permalinks: #{duplicates.join(', ')}"
+
+    assert_empty duplicates, "Duplicate public permalinks: #{duplicates.join(', ')}"
+  end
+
+  def test_blog_order_values_are_unique_positive_integers
+    orders = Dir.glob(path("_Blogs", "*.md")).sort.map do |file|
+      relative_path = file.delete_prefix("#{ROOT}/")
+      order = front_matter(relative_path).fetch("order")
+      assert_kind_of Integer, order, "Expected #{relative_path} order to be an integer"
+      assert_operator order, :>, 0, "Expected #{relative_path} order to be positive"
+      order
+    end
+
+    assert_equal orders.length, orders.uniq.length, "Blog order values must be unique"
+  end
+
+  def test_blog_archive_homepage_and_feed_use_the_blog_collection
+    archive = read("_pages/Blogs.md")
+    homepage = read("_pages/about.md")
+    head = read("_includes/head.html")
+    config = YAML.safe_load(read("_config.yml"), aliases: true)
+
+    [archive, homepage].each do |content|
+      assert_includes content, 'site.Blogs | sort: "order" | reverse'
+    end
+    assert_equal "/feed/posts.xml", config.dig("feed", "path")
+    assert_equal "/feed.xml", config.dig("feed", "collections", "Blogs", "path")
+    assert_includes head, "'/feed.xml' | absolute_url"
+    refute_includes head, "{% feed_meta %}", "The default posts feed is empty; advertise the Blog feed instead"
   end
 
   def test_collections_are_configured
@@ -83,6 +144,25 @@ class SiteStructureTest < Minitest::Test
     %w[Notes Repositories Blogs Links].each do |collection|
       assert_equal true, collections.dig(collection, "output"), "#{collection} should output pages"
       assert_equal "/:collection/:path/", collections.dig(collection, "permalink")
+    end
+  end
+
+  def test_internal_project_files_are_excluded_from_site_output
+    config = YAML.safe_load(read("_config.yml"), aliases: true)
+    excluded = config.fetch("exclude")
+
+    %w[
+      AGENTS.md
+      Gemfile
+      Gemfile.lock
+      README.md
+      docs
+      index.html
+      node_modules
+      test
+      vendor
+    ].each do |relative_path|
+      assert_includes excluded, relative_path, "Expected #{relative_path} to stay out of _site"
     end
   end
 
