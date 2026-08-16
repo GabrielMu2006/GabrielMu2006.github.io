@@ -18,11 +18,11 @@ This file is the single, complete agent management guide for this repository. Ev
 - 正式域名：`https://gabrielmu2006.cn`
 - GitHub Pages 地址：`https://gabrielmu2006.github.io`，会跳转到正式域名
 - 托管服务：GitHub Pages
-- 自定义域名声明：根目录 `CNAME`
+- 自定义域名声明：`site/CNAME`；GitHub Pages 设置中的自定义域名为实际生效配置
 
 主要公开页面：
 
-- `/`：主页，由 `_pages/about.md` 提供
+- `/`：主页，由 `site/_pages/about.md` 提供
 - `/Notes/`：课程和学习笔记
 - `/Repositories/`：GitHub 项目介绍
 - `/Blogs/`：博客
@@ -31,15 +31,17 @@ This file is the single, complete agent management guide for this repository. Ev
 
 主要文件：
 
-- `_config.yml`：站点、作者、collections、Guestbook、访问量和域名配置
-- `_data/navigation.yml`：顶部导航
-- `_pages/`：主页和各列表页
-- `_Notes/`、`_Repositories/`、`_Blogs/`、`_Links/`：Markdown 内容
-- `_layouts/`、`_includes/`：页面结构和复用组件
-- `_sass/academic.scss`：主要定制样式
-- `assets/js/main.js`：交互、Obsidian callout 等前端行为
-- `_includes/head.html`：MathJax 和访问量脚本
-- `test/site_structure_test.rb`：站点结构测试
+- `site/_config.yml`：站点、作者、collections、Guestbook、访问量和域名配置
+- `site/_data/navigation.yml`：顶部导航
+- `site/_pages/`：主页和各列表页
+- `site/content/_Notes/`、`site/content/_Repositories/`、`site/content/_Blogs/`、`site/content/_Links/`：已发布 Markdown 内容
+- `site/_layouts/`、`site/_includes/`：页面结构和复用组件
+- `site/_sass/academic.scss`：主要定制样式
+- `site/assets/js/main.js`：交互、Obsidian callout 等前端行为
+- `site/_includes/head.html`：MathJax 和访问量脚本
+- `workspace/`：草稿、原始资料和发布前记录，不参与网站构建
+- `project/docs/`、`project/test/`：内部文档和站点结构测试
+- `.github/workflows/pages.yml`：从 `site/` 构建并部署 GitHub Pages
 
 ## 2. 开始任何任务前
 
@@ -111,9 +113,9 @@ status: "Published"
 
 ## 5. 发布 Note
 
-Note 位于 `_Notes/*.md`，显示在 `/Notes/`。
+Note 位于 `site/content/_Notes/*.md`，显示在 `/Notes/`。
 
-需要确认或从用户材料中获得：源 Markdown 或正文、标题、课程/主题、简介和发布日期。用户提供本地文件时，只读取源文件，在 `_Notes/` 创建网站副本，不修改仓库外的原文件。
+需要确认或从用户材料中获得：源 Markdown 或正文、标题、课程/主题、简介和发布日期。用户提供本地文件时，只读取源文件，在 `site/content/_Notes/` 创建网站副本，不修改仓库外的原文件。尚未准备发布的本地材料可以放在 `workspace/notes/`，但不得把私密内容提交到仓库。
 
 front matter 示例：
 
@@ -173,9 +175,9 @@ callout 内的段落、列表、表格和公式之间使用带 `>` 的空行：
 - 列表结束后与下一段文字或标签之间留空行。
 - Markdown 表格前后留空行，callout 内也一样。
 - 属于某个列表项的 URL 应缩进到该列表项下。
-- `_config.yml` 中的 `kramdown.hard_wrap: true` 用于保留 Obsidian 单换行。
-- callout 转换逻辑位于 `assets/js/main.js`，不得把内容粗暴转换为纯文本，必须保留 kramdown 生成的 `<br>`。
-- callout 样式位于 `_sass/academic.scss`，MathJax 位于 `_includes/head.html`。
+- `site/_config.yml` 中的 `kramdown.hard_wrap: true` 用于保留 Obsidian 单换行。
+- callout 转换逻辑位于 `site/assets/js/main.js`，不得把内容粗暴转换为纯文本，必须保留 kramdown 生成的 `<br>`。
+- callout 样式位于 `site/_sass/academic.scss`，MathJax 位于 `site/_includes/head.html`。
 
 Note 发布后必须确认：
 
@@ -187,7 +189,7 @@ Note 发布后必须确认：
 
 ## 6. 发布 Blog
 
-Blog 位于 `_Blogs/*.md`，显示在 `/Blogs/` 和主页的 writing 区域。
+Blog 位于 `site/content/_Blogs/*.md`，显示在 `/Blogs/` 和主页的 writing 区域。发布前草稿可以放在 `workspace/blogs/`。
 
 front matter 示例：
 
@@ -210,14 +212,14 @@ status: "Published"
 3. 短文不必强行增加标题层级；长文只有在有助阅读时才增加小标题。
 4. 外部链接使用明确的 Markdown 链接文字，并确认地址正确。
 5. 每篇 Blog 必须有唯一 `order`。新文章读取全部现有 Blog 的 `order`，使用当前最大值加一。
-6. `_pages/about.md` 和 `_pages/Blogs.md` 必须按 `order` 从大到小排列，因此最新文章显示在最前面。
+6. `site/_pages/about.md` 和 `site/_pages/Blogs.md` 必须按 `order` 从大到小排列，因此最新文章显示在最前面。
 7. 日期仍应真实准确；`order` 只负责明确展示顺序，不能用来伪造发布日期。
 
 发布后确认文章出现在主页和 `/Blogs/`，每篇文章链接到自己的唯一 permalink。
 
 ## 7. 发布 Repository
 
-Repository 条目位于 `_Repositories/*.md`，显示在 `/Repositories/`。这些页面是项目介绍并链接 GitHub，不会复制或托管项目仓库本身。
+Repository 条目位于 `site/content/_Repositories/*.md`，显示在 `/Repositories/`。这些页面是项目介绍并链接 GitHub，不会复制或托管项目仓库本身。发布前的 README 快照和调研记录可以放在 `workspace/repositories/`。
 
 输入应包括公开 GitHub URL、最新 README、项目状态、用途和目标用户。若仓库刚从 private 改为 public，必须重新读取 README，不得依赖此前无法访问时的内容。
 
@@ -252,24 +254,24 @@ link: "https://github.com/OWNER/REPOSITORY"
 
 ## 8. 简单维护
 
-个人资料优先修改 `_config.yml` 中的：
+个人资料优先修改 `site/_config.yml` 中的：
 
 - `title`、`name`、`description`
 - `author.name`、`author.avatar`、`author.bio`
 - `author.email`、`author.github` 和其他作者链接
 
-导航修改 `_data/navigation.yml`。主页内容修改 `_pages/about.md`。修改链接、permalink 或 collection 时，应同时搜索所有引用，并检查是否产生重复 permalink。
+导航修改 `site/_data/navigation.yml`。主页内容修改 `site/_pages/about.md`。修改链接、permalink 或 collection 时，应同时搜索所有引用，并检查是否产生重复 permalink。
 
 Guestbook 使用 Giscus 和 GitHub Discussions：
 
-- 配置位于 `_config.yml` 的 `guestbook`。
-- 嵌入组件位于 `_includes/guestbook-giscus.html`。
+- 配置位于 `site/_config.yml` 的 `guestbook`。
+- 嵌入组件位于 `site/_includes/guestbook-giscus.html`。
 - 主页和 `/Guestbook/` 使用同一条 discussion thread。
 - 修改 Giscus repo/category ID、GitHub App 或 Discussions 设置属于外部配置变更，必须先询问用户。
 
 访问量使用 Busuanzi：
 
-- 配置位于 `_config.yml` 的 `pageviews`。
+- 配置位于 `site/_config.yml` 的 `pageviews`。
 - 数字显示在作者侧栏链接下方。
 - `pageviews.enabled: false` 可关闭显示。
 - 更换统计服务或增加跟踪脚本必须先询问用户。
@@ -277,8 +279,9 @@ Guestbook 使用 Giscus 和 GitHub Discussions：
 域名和部署：
 
 - GitHub Pages 是服务器/托管服务，阿里云只提供 DNS。
-- `CNAME` 应保持为 `gabrielmu2006.cn`。
-- `_config.yml` 的 `url` 应保持为 `https://gabrielmu2006.cn`，`baseurl` 为空。
+- `site/CNAME` 应保持为 `gabrielmu2006.cn`，同时不得擅自改变 GitHub Pages 设置中实际生效的自定义域名。
+- `site/_config.yml` 的 `url` 应保持为 `https://gabrielmu2006.cn`，`baseurl` 为空。
+- 网站通过 `.github/workflows/pages.yml` 从 `site/` 构建；Pages 发布源应设置为 GitHub Actions。
 - DNS 或 Pages 设置不得在普通维护中擅自修改。
 
 ## 9. 视觉样式修改与恢复机制
@@ -291,7 +294,7 @@ Guestbook 使用 Giscus 和 GitHub Discussions：
 2. 记录修改前的 commit：`git rev-parse HEAD`。
 3. 从当前 `main` 创建独立分支，分支名使用 `codex/` 前缀，例如 `codex/update-homepage-style`。
 4. 在该分支修改并运行测试和 Jekyll 构建。
-5. 本地浏览器预览不是每次都强制；用户要求、复杂响应式调整或仅靠源码无法确认效果时，应运行 `bundle exec jekyll serve` 并检查相关页面。若未预览，必须明确告诉用户。
+5. 本地浏览器预览不是每次都强制；用户要求、复杂响应式调整或仅靠源码无法确认效果时，应运行 `bundle exec jekyll serve --source site --config site/_config.yml --destination _site` 并检查相关页面。若未预览，必须明确告诉用户。
 6. 在任何 commit 和 push 之前，向用户说明改动、验证结果、分支名和修改前 commit；有预览时提供截图或清晰结果。等待用户确认。
 7. 用户确认后才能提交。随后将已确认的修改合入 `main` 并推送，或按用户指定方式发布。
 8. 保留修改前 commit 和样式分支信息，不主动删除分支。需要恢复时优先使用可审计的 `git revert <style-commit>`；不得未经确认使用 reset 或 checkout 覆盖内容。
@@ -303,8 +306,8 @@ Guestbook 使用 Giscus 和 GitHub Discussions：
 所有内容发布和维护至少运行：
 
 ```bash
-ruby test/site_structure_test.rb
-bundle exec jekyll build
+ruby project/test/site_structure_test.rb
+bundle exec jekyll build --source site --config site/_config.yml --destination _site
 git diff --check
 ```
 
@@ -318,12 +321,12 @@ git diff
 对渲染敏感的 Note 或视觉修改，还应检查 `_site` 生成结果；必要时运行：
 
 ```bash
-bundle exec jekyll serve
+bundle exec jekyll serve --source site --config site/_config.yml --destination _site
 ```
 
 并访问 `http://127.0.0.1:4000/`。本地服务完成任务前应妥善停止，不要留下无用的后台进程。
 
-普通维护检查通过后，只暂存相关文件，自动提交并推送 `main`。推送后等待 GitHub Pages 构建，并尽可能检查正式列表页和详情 permalink。仅本地构建成功不能证明线上部署已经完成。
+普通维护检查通过后，只暂存相关文件，自动提交并推送 `main`。推送后等待 `.github/workflows/pages.yml` 的 GitHub Pages 工作流完成，并尽可能检查正式列表页和详情 permalink。仅本地构建成功不能证明线上部署已经完成。
 
 ## 11. 新 Agent 可复用请求
 
@@ -365,11 +368,11 @@ This is Muzhi Li's Jekyll personal website. It uses the AcademicPages/Minimal Mi
 - Canonical domain: `https://gabrielmu2006.cn`
 - GitHub Pages URL: `https://gabrielmu2006.github.io`, which redirects to the canonical domain
 - Hosting service: GitHub Pages
-- Custom domain declaration: root-level `CNAME`
+- Custom domain declaration: `site/CNAME`; the custom domain in GitHub Pages settings is authoritative
 
 Main public pages:
 
-- `/`: homepage provided by `_pages/about.md`
+- `/`: homepage provided by `site/_pages/about.md`
 - `/Notes/`: course and study notes
 - `/Repositories/`: GitHub project descriptions
 - `/Blogs/`: blog posts
@@ -378,15 +381,17 @@ Main public pages:
 
 Main files:
 
-- `_config.yml`: site, author, collections, Guestbook, pageview, and domain configuration
-- `_data/navigation.yml`: top navigation
-- `_pages/`: homepage and archive pages
-- `_Notes/`, `_Repositories/`, `_Blogs/`, `_Links/`: Markdown content
-- `_layouts/`, `_includes/`: page structure and reusable components
-- `_sass/academic.scss`: main custom styles
-- `assets/js/main.js`: interactions, Obsidian callouts, and other frontend behavior
-- `_includes/head.html`: MathJax and pageview scripts
-- `test/site_structure_test.rb`: site structure tests
+- `site/_config.yml`: site, author, collections, Guestbook, pageview, and domain configuration
+- `site/_data/navigation.yml`: top navigation
+- `site/_pages/`: homepage and archive pages
+- `site/content/_Notes/`, `site/content/_Repositories/`, `site/content/_Blogs/`, `site/content/_Links/`: published Markdown content
+- `site/_layouts/`, `site/_includes/`: page structure and reusable components
+- `site/_sass/academic.scss`: main custom styles
+- `site/assets/js/main.js`: interactions, Obsidian callouts, and other frontend behavior
+- `site/_includes/head.html`: MathJax and pageview scripts
+- `workspace/`: drafts, source material, and pre-publication records; never part of the website build
+- `project/docs/`, `project/test/`: internal documentation and site structure tests
+- `.github/workflows/pages.yml`: builds and deploys GitHub Pages from `site/`
 
 ## 2. Before Starting Any Task
 
@@ -458,9 +463,9 @@ status: "Published"
 
 ## 5. Publishing a Note
 
-Notes live in `_Notes/*.md` and appear at `/Notes/`.
+Notes live in `site/content/_Notes/*.md` and appear at `/Notes/`.
 
-Obtain from the user or source material: the source Markdown or body, title, course/topic, introduction, and publication date. When the user provides a local file, read it and create the website copy in `_Notes/`; do not modify the original file outside the repository.
+Obtain from the user or source material: the source Markdown or body, title, course/topic, introduction, and publication date. When the user provides a local file, read it and create the website copy in `site/content/_Notes/`; do not modify the original file outside the repository. Unpublished local material may live in `workspace/notes/`, but private material must never be committed.
 
 Example front matter:
 
@@ -520,9 +525,9 @@ Equation and Markdown rules:
 - Insert a blank line between the end of a list and the following paragraph or label.
 - Insert blank lines before and after Markdown tables, including inside callouts.
 - Indent a URL beneath the list item it belongs to.
-- `_config.yml` uses `kramdown.hard_wrap: true` to preserve Obsidian-style single line breaks.
-- The callout upgrader lives in `assets/js/main.js`. It must not flatten content into plain text and must preserve kramdown-generated `<br>` elements.
-- Callout styles live in `_sass/academic.scss`, and MathJax is configured in `_includes/head.html`.
+- `site/_config.yml` uses `kramdown.hard_wrap: true` to preserve Obsidian-style single line breaks.
+- The callout upgrader lives in `site/assets/js/main.js`. It must not flatten content into plain text and must preserve kramdown-generated `<br>` elements.
+- Callout styles live in `site/_sass/academic.scss`, and MathJax is configured in `site/_includes/head.html`.
 
 After publishing a Note, confirm that:
 
@@ -534,7 +539,7 @@ After publishing a Note, confirm that:
 
 ## 6. Publishing a Blog Post
 
-Blog posts live in `_Blogs/*.md` and appear on `/Blogs/` and in the homepage writing area.
+Blog posts live in `site/content/_Blogs/*.md` and appear on `/Blogs/` and in the homepage writing area. Pre-publication drafts may live in `workspace/blogs/`.
 
 Example front matter:
 
@@ -557,14 +562,14 @@ Publishing rules:
 3. Do not force headings into a short post. Add headings to a longer post only when they improve readability.
 4. Use descriptive Markdown link text for external links and verify the URL.
 5. Every Blog must have a unique `order`. Read all existing Blog order values and assign the current maximum plus one to a new post.
-6. `_pages/about.md` and `_pages/Blogs.md` must sort by `order` in descending order so the newest post appears first.
+6. `site/_pages/about.md` and `site/_pages/Blogs.md` must sort by `order` in descending order so the newest post appears first.
 7. Dates must remain truthful. `order` exists only to make display order explicit and must not be used to falsify publication dates.
 
 After publishing, confirm that the post appears on the homepage and `/Blogs/`, and that each post links to its own unique permalink.
 
 ## 7. Publishing a Repository Entry
 
-Repository entries live in `_Repositories/*.md` and appear at `/Repositories/`. These pages describe and link to GitHub projects; they do not copy or host the repositories themselves.
+Repository entries live in `site/content/_Repositories/*.md` and appear at `/Repositories/`. These pages describe and link to GitHub projects; they do not copy or host the repositories themselves. Pre-publication README snapshots and research notes may live in `workspace/repositories/`.
 
 Inputs should include a public GitHub URL, the latest README, project status, purpose, and intended audience. If a repository was recently changed from private to public, read the README again rather than relying on information captured while access was unavailable.
 
@@ -599,24 +604,24 @@ After publishing, confirm that the entry appears in the homepage project area an
 
 ## 8. Routine Maintenance
 
-For personal information, update these `_config.yml` fields first:
+For personal information, update these `site/_config.yml` fields first:
 
 - `title`, `name`, and `description`
 - `author.name`, `author.avatar`, and `author.bio`
 - `author.email`, `author.github`, and other author links
 
-Edit navigation in `_data/navigation.yml` and homepage content in `_pages/about.md`. When changing links, permalinks, or collections, search all references and check for duplicate permalinks.
+Edit navigation in `site/_data/navigation.yml` and homepage content in `site/_pages/about.md`. When changing links, permalinks, or collections, search all references and check for duplicate permalinks.
 
 The Guestbook uses Giscus and GitHub Discussions:
 
-- Configuration lives under `guestbook` in `_config.yml`.
-- The embed component is `_includes/guestbook-giscus.html`.
+- Configuration lives under `guestbook` in `site/_config.yml`.
+- The embed component is `site/_includes/guestbook-giscus.html`.
 - The homepage and `/Guestbook/` share one discussion thread.
 - Changing Giscus repository/category IDs, GitHub App access, or Discussions settings is an external configuration change and requires user approval first.
 
 Pageviews use Busuanzi:
 
-- Configuration lives under `pageviews` in `_config.yml`.
+- Configuration lives under `pageviews` in `site/_config.yml`.
 - The number appears below the links in the author sidebar.
 - Set `pageviews.enabled: false` to hide it.
 - Replacing the analytics provider or adding tracking scripts requires user approval first.
@@ -624,8 +629,9 @@ Pageviews use Busuanzi:
 Domain and deployment:
 
 - GitHub Pages is the server/hosting service; Alibaba Cloud provides DNS only.
-- `CNAME` must remain `gabrielmu2006.cn`.
-- `_config.yml` must keep `url: https://gabrielmu2006.cn` and an empty `baseurl`.
+- `site/CNAME` must remain `gabrielmu2006.cn`; do not change the authoritative custom domain in GitHub Pages settings without approval.
+- `site/_config.yml` must keep `url: https://gabrielmu2006.cn` and an empty `baseurl`.
+- The site is built from `site/` by `.github/workflows/pages.yml`; the Pages publishing source must be GitHub Actions.
 - Do not change DNS or Pages settings as part of routine maintenance.
 
 ## 9. Visual Style Changes and Recovery
@@ -638,7 +644,7 @@ Never commit visual changes directly on `main`. Follow this workflow:
 2. Record the pre-change commit with `git rev-parse HEAD`.
 3. Create a separate branch from the current `main` using the `codex/` prefix, for example `codex/update-homepage-style`.
 4. Make changes on that branch and run the tests and Jekyll build.
-5. A local browser preview is not mandatory every time. Run `bundle exec jekyll serve` and inspect the relevant pages when the user requests it, the change is responsively complex, or source inspection alone cannot verify the result. If preview is skipped, explicitly tell the user.
+5. A local browser preview is not mandatory every time. Run `bundle exec jekyll serve --source site --config site/_config.yml --destination _site` and inspect the relevant pages when the user requests it, the change is responsively complex, or source inspection alone cannot verify the result. If preview is skipped, explicitly tell the user.
 6. Before any commit or push, explain the changes, verification results, branch name, and pre-change commit to the user. Provide screenshots or a clear preview result when a preview was performed. Wait for user approval.
 7. Commit only after the user approves. Then merge the approved change into `main` and push it, or publish it using the method specified by the user.
 8. Preserve the pre-change commit and style branch information. Do not proactively delete the branch. To restore a published style change, prefer the auditable `git revert <style-commit>` workflow. Never use reset or checkout to overwrite content without explicit approval.
@@ -650,8 +656,8 @@ If the user rejects a style proposal, do not commit, push, or silently discard t
 Run at least the following for every content publication and maintenance task:
 
 ```bash
-ruby test/site_structure_test.rb
-bundle exec jekyll build
+ruby project/test/site_structure_test.rb
+bundle exec jekyll build --source site --config site/_config.yml --destination _site
 git diff --check
 ```
 
@@ -665,12 +671,12 @@ git diff
 For rendering-sensitive Notes or visual changes, also inspect the generated `_site` output. When needed, run:
 
 ```bash
-bundle exec jekyll serve
+bundle exec jekyll serve --source site --config site/_config.yml --destination _site
 ```
 
 and visit `http://127.0.0.1:4000/`. Stop the local service cleanly before finishing the task; do not leave unnecessary background processes running.
 
-After routine maintenance passes verification, stage only the related files, commit automatically, and push `main`. After pushing, allow GitHub Pages to build and check the live archive and detail permalink whenever possible. A successful local build alone does not prove that GitHub Pages deployed the new commit.
+After routine maintenance passes verification, stage only the related files, commit automatically, and push `main`. After pushing, wait for the GitHub Pages workflow in `.github/workflows/pages.yml` and check the live archive and detail permalink whenever possible. A successful local build alone does not prove that GitHub Pages deployed the new commit.
 
 ## 11. Reusable Requests for a New Agent
 

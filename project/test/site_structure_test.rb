@@ -3,7 +3,8 @@ require "date"
 require "yaml"
 
 class SiteStructureTest < Minitest::Test
-  ROOT = File.expand_path("..", __dir__)
+  ROOT = File.expand_path("../..", __dir__)
+  SITE_ROOT = File.join(ROOT, "site")
   COLLECTIONS = %w[Notes Repositories Blogs Links].freeze
   PUBLISHING_COLLECTIONS = %w[Notes Repositories Blogs].freeze
   COLLECTION_FIELDS = %w[title collection type permalink date status].freeze
@@ -12,7 +13,17 @@ class SiteStructureTest < Minitest::Test
     File.join(ROOT, *parts)
   end
 
+  def site_path(*parts)
+    File.join(SITE_ROOT, *parts)
+  end
+
   def read(*parts)
+    target = site_path(*parts)
+    assert File.file?(target), "Expected #{File.join(*parts)} to exist"
+    File.read(target)
+  end
+
+  def repo_read(*parts)
     target = path(*parts)
     assert File.file?(target), "Expected #{File.join(*parts)} to exist"
     File.read(target)
@@ -28,8 +39,8 @@ class SiteStructureTest < Minitest::Test
 
   def collection_entry_paths(collections = COLLECTIONS)
     collections.flat_map do |collection|
-      Dir.glob(path("_#{collection}", "*.md")).sort.map do |file|
-        file.delete_prefix("#{ROOT}/")
+      Dir.glob(site_path("content", "_#{collection}", "*.md")).sort.map do |file|
+        file.delete_prefix("#{SITE_ROOT}/")
       end
     end
   end
@@ -37,10 +48,7 @@ class SiteStructureTest < Minitest::Test
   def test_core_jekyll_files_exist
     %w[
       _config.yml
-      Gemfile
-      index.html
-      README.md
-      docs/README.md
+      CNAME
       _data/navigation.yml
       _pages/about.md
       _pages/Notes.md
@@ -49,12 +57,27 @@ class SiteStructureTest < Minitest::Test
       _pages/Links.md
       _pages/Guestbook.md
     ].each do |relative_path|
+      assert File.file?(site_path(relative_path)), "Expected site/#{relative_path} to exist"
+    end
+  end
+
+  def test_project_management_files_exist
+    %w[
+      AGENTS.md
+      Gemfile
+      Gemfile.lock
+      README.md
+      project/docs/README.md
+      project/test/site_structure_test.rb
+      workspace/README.md
+      .github/workflows/pages.yml
+    ].each do |relative_path|
       assert File.file?(path(relative_path)), "Expected #{relative_path} to exist"
     end
   end
 
   def test_content_publishing_workflow_is_documented_for_future_sessions
-    guide = read("AGENTS.md")
+    guide = repo_read("AGENTS.md")
 
     %w[_Notes _Blogs _Repositories].each do |collection|
       assert_includes guide, collection
@@ -68,8 +91,8 @@ class SiteStructureTest < Minitest::Test
     assert_includes guide, "# English"
     assert_includes guide, "order"
     assert_includes guide, "codex/update-homepage-style"
-    assert_includes guide, "ruby test/site_structure_test.rb"
-    assert_includes guide, "bundle exec jekyll build"
+    assert_includes guide, "ruby project/test/site_structure_test.rb"
+    assert_includes guide, "bundle exec jekyll build --source site --config site/_config.yml"
     assert_includes guide, "git push origin main"
     refute File.exist?(path("CONTENT_WORKFLOW.md")), "Publishing rules should live only in AGENTS.md"
   end
@@ -85,7 +108,7 @@ class SiteStructureTest < Minitest::Test
   def test_collection_entries_follow_the_publishing_contract
     collection_entry_paths(PUBLISHING_COLLECTIONS).each do |relative_path|
       data = front_matter(relative_path)
-      collection = File.dirname(relative_path).delete_prefix("_")
+      collection = File.basename(File.dirname(relative_path)).delete_prefix("_")
       slug = File.basename(relative_path, ".md")
 
       COLLECTION_FIELDS.each do |field|
@@ -100,8 +123,8 @@ class SiteStructureTest < Minitest::Test
   end
 
   def test_public_permalinks_are_unique
-    source_paths = collection_entry_paths + Dir.glob(path("_pages", "*.md")).sort.map do |file|
-      file.delete_prefix("#{ROOT}/")
+    source_paths = collection_entry_paths + Dir.glob(site_path("_pages", "*.md")).sort.map do |file|
+      file.delete_prefix("#{SITE_ROOT}/")
     end
     permalinks = source_paths.map { |relative_path| front_matter(relative_path).fetch("permalink") }
     counts = permalinks.each_with_object(Hash.new(0)) { |permalink, result| result[permalink] += 1 }
@@ -111,8 +134,8 @@ class SiteStructureTest < Minitest::Test
   end
 
   def test_blog_order_values_are_unique_positive_integers
-    orders = Dir.glob(path("_Blogs", "*.md")).sort.map do |file|
-      relative_path = file.delete_prefix("#{ROOT}/")
+    orders = Dir.glob(site_path("content", "_Blogs", "*.md")).sort.map do |file|
+      relative_path = file.delete_prefix("#{SITE_ROOT}/")
       order = front_matter(relative_path).fetch("order")
       assert_kind_of Integer, order, "Expected #{relative_path} order to be an integer"
       assert_operator order, :>, 0, "Expected #{relative_path} order to be positive"
@@ -141,29 +164,50 @@ class SiteStructureTest < Minitest::Test
     config = YAML.safe_load(read("_config.yml"), aliases: true)
     collections = config.fetch("collections")
 
+    assert_equal "content", config.fetch("collections_dir")
     %w[Notes Repositories Blogs Links].each do |collection|
       assert_equal true, collections.dig(collection, "output"), "#{collection} should output pages"
       assert_equal "/:collection/:path/", collections.dig(collection, "permalink")
     end
   end
 
-  def test_internal_project_files_are_excluded_from_site_output
-    config = YAML.safe_load(read("_config.yml"), aliases: true)
-    excluded = config.fetch("exclude")
+  def test_site_source_contains_only_deployable_files
+    expected = %w[
+      CNAME
+      _config.yml
+      _data
+      _includes
+      _layouts
+      _pages
+      _sass
+      assets
+      content
+    ]
 
-    %w[
-      AGENTS.md
-      Gemfile
-      Gemfile.lock
-      README.md
-      docs
-      index.html
-      node_modules
-      test
-      vendor
-    ].each do |relative_path|
-      assert_includes excluded, relative_path, "Expected #{relative_path} to stay out of _site"
+    actual = Dir.children(SITE_ROOT).reject { |name| name == ".DS_Store" }
+    assert_equal expected.sort, actual.sort
+    refute File.exist?(site_path("AGENTS.md"))
+    refute File.exist?(site_path("project"))
+    refute File.exist?(site_path("workspace"))
+  end
+
+  def test_pages_workflow_builds_only_the_site_directory
+    workflow = repo_read(".github/workflows/pages.yml")
+
+    assert_includes workflow, "actions/configure-pages@v5"
+    assert_includes workflow, "actions/jekyll-build-pages@v1"
+    assert_includes workflow, "source: ./site"
+    assert_includes workflow, "actions/upload-pages-artifact@v4"
+    assert_includes workflow, "actions/deploy-pages@v4"
+  end
+
+  def test_workspace_is_separate_from_published_content
+    %w[blogs notes repositories attachments].each do |directory|
+      assert File.directory?(path("workspace", directory)), "Expected workspace/#{directory} to exist"
     end
+
+    refute File.exist?(site_path("workspace"))
+    assert_includes repo_read(".gitignore"), "workspace/private/"
   end
 
   def test_markdown_preserves_obsidian_style_line_breaks
@@ -206,13 +250,13 @@ class SiteStructureTest < Minitest::Test
       _Blogs
       _Links
     ].each do |relative_path|
-      assert File.directory?(path(relative_path)), "Expected #{relative_path} to exist"
-      assert File.file?(path(relative_path, ".gitkeep")), "Expected #{relative_path}/.gitkeep to exist"
+      assert File.directory?(site_path("content", relative_path)), "Expected site/content/#{relative_path} to exist"
+      assert File.file?(site_path("content", relative_path, ".gitkeep")), "Expected site/content/#{relative_path}/.gitkeep to exist"
     end
   end
 
   def test_no_analytics_script_is_enabled_by_default
-    Dir.glob(path("**", "*.{md,html,yml}")).each do |file|
+    Dir.glob(site_path("**", "*.{md,html,yml}")).each do |file|
       content = File.read(file)
       refute_includes content, "mapmyvisitors.com", "#{file} should not enable mapmyvisitors by default"
       refute_includes content, "tracking_id: UA-", "#{file} should not ship a default analytics ID"
@@ -328,14 +372,14 @@ class SiteStructureTest < Minitest::Test
   end
 
   def test_lmfff_note_avoids_markdown_table_conflicts_in_inline_math
-    note = read("_Notes/large-models-foundations-frontiers-lecture-1.md")
+    note = read("content/_Notes/large-models-foundations-frontiers-lecture-1.md")
 
     refute_includes note, "$|V|$", "Use \\lvert V\\rvert so kramdown does not parse inline math as a table"
     assert_includes note, "\\lvert V\\rvert"
   end
 
   def test_lmfff_display_math_blocks_are_isolated
-    lines = read("_Notes/large-models-foundations-frontiers-lecture-1.md").lines.map(&:chomp)
+    lines = read("content/_Notes/large-models-foundations-frontiers-lecture-1.md").lines.map(&:chomp)
     in_math = false
 
     lines.each_with_index do |line, index|
@@ -360,7 +404,7 @@ class SiteStructureTest < Minitest::Test
   end
 
   def test_lmfff_plain_text_does_not_continue_list_items
-    lines = read("_Notes/large-models-foundations-frontiers-lecture-1.md").lines.map(&:chomp)
+    lines = read("content/_Notes/large-models-foundations-frontiers-lecture-1.md").lines.map(&:chomp)
 
     lines.each_cons(2).with_index do |(previous, current), index|
       previous_text = previous.strip

@@ -54,17 +54,6 @@ author:
 include:
   - _pages
 
-exclude:
-  - AGENTS.md
-  - Gemfile
-  - Gemfile.lock
-  - README.md
-  - docs
-  - index.html
-  - node_modules
-  - test
-  - vendor
-
 encoding: "utf-8"
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 
@@ -82,6 +71,8 @@ kramdown:
   entity_output: as_char
   toc_levels: 1..6
   smart_quotes: lsquo,rsquo,ldquo,rdquo
+
+collections_dir: content
 
 collections:
   Notes:
