@@ -39,6 +39,8 @@ This file is the single, complete agent management guide for this repository. Ev
 - `site/_sass/academic.scss`：主要定制样式
 - `site/assets/js/main.js`：交互、Obsidian callout 等前端行为
 - `site/_includes/head.html`：MathJax 和访问量脚本
+- `site/downloads/notes/`：笔记下载产物（`.md` / `.zip`）
+- `project/scripts/package_notes.rb`：生成笔记下载产物的脚本
 - `workspace/`：草稿、原始资料和发布前记录，不参与网站构建
 - `project/docs/`、`project/test/`：内部文档和站点结构测试
 - `.github/workflows/pages.yml`：从 `site/` 构建并部署 GitHub Pages
@@ -136,6 +138,14 @@ status: "Published"
 2. 长笔记可以添加简短阅读导引。
 3. 保留作者的技术内容和表达，只修复格式问题及明显错别字，不静默改变观点。
 4. 保留标题、列表、表格、链接、代码、公式和 Obsidian callout。
+
+### 笔记配图与下载
+
+- 笔记图片放在 `site/assets/images/notes/<slug>/`，正文用 `![描述](/assets/images/notes/<slug>/文件名)` 引用；`<slug>` 与笔记文件名一致。
+- 发布或修改笔记后运行 `ruby project/scripts/package_notes.rb` 重新生成下载产物：
+  - `site/downloads/notes/<slug>.md`：无图笔记的下载副本（已去除 front matter）。
+  - `site/downloads/notes/<slug>.zip`：有图笔记的下载包，内含 `<slug>.md` 与 `images/` 目录，图片链接已改为相对路径。
+- 笔记页自动显示下载链接：有图指向 `.zip`，无图指向 `.md`。下载产物必须与正文和图片一致（`test_note_downloads_are_packaged_and_in_sync` 会校验）。
 
 Obsidian callout 保持 blockquote 形式：
 
@@ -333,7 +343,7 @@ bundle exec jekyll serve --source site --config site/_config.yml --destination _
 Note：
 
 ```text
-请先完整阅读 AGENTS.md，然后把附带的笔记发布到 Notes。保留原文内容，增加简短简介，按文档规则处理 Obsidian callout 和公式，运行测试与 Jekyll 构建，并自动提交和推送网站更新。
+请先完整阅读 AGENTS.md，然后把附带的笔记发布到 Notes。保留原文内容，增加简短简介，按文档规则处理 Obsidian callout 和公式，运行打包脚本（`ruby project/scripts/package_notes.rb`）、测试与 Jekyll 构建，并自动提交和推送网站更新。
 ```
 
 Blog：
@@ -389,6 +399,8 @@ Main files:
 - `site/_sass/academic.scss`: main custom styles
 - `site/assets/js/main.js`: interactions, Obsidian callouts, and other frontend behavior
 - `site/_includes/head.html`: MathJax and pageview scripts
+- `site/downloads/notes/`: note download artifacts (`.md` / `.zip`)
+- `project/scripts/package_notes.rb`: script that generates the note download artifacts
 - `workspace/`: drafts, source material, and pre-publication records; never part of the website build
 - `project/docs/`, `project/test/`: internal documentation and site structure tests
 - `.github/workflows/pages.yml`: builds and deploys GitHub Pages from `site/`
@@ -486,6 +498,14 @@ Body preparation:
 2. Add a short reading map when a long note benefits from one.
 3. Preserve the author's technical content and expression. Fix formatting problems and obvious typos without silently changing claims.
 4. Preserve headings, lists, tables, links, code, equations, and Obsidian callouts.
+
+### Note images and downloads
+
+- Store note images under `site/assets/images/notes/<slug>/` and reference them as `![description](/assets/images/notes/<slug>/filename)`; `<slug>` matches the note filename.
+- After publishing or editing a note, run `ruby project/scripts/package_notes.rb` to regenerate the download artifacts:
+  - `site/downloads/notes/<slug>.md`: download copy for notes without images (front matter stripped).
+  - `site/downloads/notes/<slug>.zip`: download bundle for notes with images, containing `<slug>.md` and an `images/` directory with image links rewritten to relative paths.
+- Note pages automatically show a download link: images present points to `.zip`, otherwise to `.md`. Download artifacts must stay in sync with the body and images (verified by `test_note_downloads_are_packaged_and_in_sync`).
 
 Keep Obsidian callouts as blockquotes:
 
@@ -683,7 +703,7 @@ After routine maintenance passes verification, stage only the related files, com
 Note:
 
 ```text
-Read AGENTS.md completely, then publish the attached note to Notes. Preserve the source content, add a short introduction, process Obsidian callouts and equations according to the documented rules, run the tests and Jekyll build, and automatically commit and push the site update.
+Read AGENTS.md completely, then publish the attached note to Notes. Preserve the source content, add a short introduction, process Obsidian callouts and equations according to the documented rules, run the packaging script (`ruby project/scripts/package_notes.rb`), the tests and Jekyll build, and automatically commit and push the site update.
 ```
 
 Blog:

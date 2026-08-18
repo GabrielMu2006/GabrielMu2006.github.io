@@ -182,6 +182,7 @@ class SiteStructureTest < Minitest::Test
       _sass
       assets
       content
+      downloads
     ]
 
     actual = Dir.children(SITE_ROOT).reject { |name| name == ".DS_Store" }
@@ -297,6 +298,32 @@ class SiteStructureTest < Minitest::Test
     assert_includes script, "hidden"
     assert_includes styles, ".callout__toggle"
     assert_includes styles, ".callout__content"
+  end
+
+  def test_note_downloads_are_packaged_and_in_sync
+    layout = read("_layouts/single.html")
+
+    assert_includes layout, 'page.collection == "Notes"'
+    assert_includes layout, "note-download"
+    assert_includes layout, "/downloads/notes/"
+
+    Dir.glob(site_path("content", "_Notes", "*.md")).sort.each do |file|
+      slug = File.basename(file, ".md")
+      body = File.read(file).sub(/\A---[ \t]*\r?\n.*?\r?\n---[ \t]*\r?\n/m, "").strip
+
+      md_path = path("site", "downloads", "notes", "#{slug}.md")
+      assert File.file?(md_path), "Expected downloadable .md for #{slug}"
+      assert_equal body, File.read(md_path).strip, "Downloadable .md for #{slug} is out of sync"
+
+      images_dir = site_path("assets", "images", "notes", slug)
+      has_images = File.directory?(images_dir) &&
+                   Dir.glob(File.join(images_dir, "**", "*")).any? { |p| File.file?(p) }
+
+      if has_images
+        assert File.file?(path("site", "downloads", "notes", "#{slug}.zip")),
+               "Expected downloadable .zip for #{slug} (has images)"
+      end
+    end
   end
 
   def test_homepage_uses_personal_empty_states

@@ -213,6 +213,29 @@ samp {
   line-height: 1.05;
 }
 
+.note-download {
+  margin: 0 0 1.4rem;
+}
+
+.note-download__link {
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-soft);
+  background: var(--color-surface);
+  color: var(--color-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.note-download__link:hover,
+.note-download__link:focus {
+  border-color: var(--color-link);
+  background: var(--color-surface-strong);
+  color: var(--color-link-hover);
+}
+
 .page__content h2,
 .archive__intro h2 {
   margin-top: 2.4rem;
