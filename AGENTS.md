@@ -142,10 +142,12 @@ status: "Published"
 ### 笔记配图与下载
 
 - 笔记图片放在 `site/assets/images/notes/<slug>/`，正文用 `![描述](/assets/images/notes/<slug>/文件名)` 引用；`<slug>` 与笔记文件名一致。
+- 图片文件名同样使用 ASCII 小写字母和连字符（如 `traditional-recommender-models.png`）；Obsidian 的 `![[图片.png]]` 引用需改为标准 `![描述](路径)` 形式。
 - 发布或修改笔记后运行 `ruby project/scripts/package_notes.rb` 重新生成下载产物：
   - `site/downloads/notes/<slug>.md`：无图笔记的下载副本（已去除 front matter）。
   - `site/downloads/notes/<slug>.zip`：有图笔记的下载包，内含 `<slug>.md` 与 `images/` 目录，图片链接已改为相对路径。
 - 笔记页自动显示下载链接：有图指向 `.zip`，无图指向 `.md`。下载产物必须与正文和图片一致（`test_note_downloads_are_packaged_and_in_sync` 会校验）。
+- 发布完成后，清理用户放入仓库根目录或 `workspace/` 的原始文件与图片（保留 `site/` 内的规范副本即可）。
 
 Obsidian callout 保持 blockquote 形式：
 
@@ -502,10 +504,12 @@ Body preparation:
 ### Note images and downloads
 
 - Store note images under `site/assets/images/notes/<slug>/` and reference them as `![description](/assets/images/notes/<slug>/filename)`; `<slug>` matches the note filename.
+- Image filenames also use ASCII lowercase letters and hyphens (e.g. `traditional-recommender-models.png`); convert Obsidian `![[image.png]]` references to standard `![description](path)` form.
 - After publishing or editing a note, run `ruby project/scripts/package_notes.rb` to regenerate the download artifacts:
   - `site/downloads/notes/<slug>.md`: download copy for notes without images (front matter stripped).
   - `site/downloads/notes/<slug>.zip`: download bundle for notes with images, containing `<slug>.md` and an `images/` directory with image links rewritten to relative paths.
 - Note pages automatically show a download link: images present points to `.zip`, otherwise to `.md`. Download artifacts must stay in sync with the body and images (verified by `test_note_downloads_are_packaged_and_in_sync`).
+- After publishing, clean up the original files and images the user dropped into the repository root or `workspace/` (keep only the canonical copies under `site/`).
 
 Keep Obsidian callouts as blockquotes:
 
