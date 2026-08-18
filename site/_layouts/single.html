@@ -14,6 +14,23 @@ layout: default
       <h1 class="page__title">{{ page.title }}</h1>
     {% endunless %}
 
+    {% if page.collection == "Notes" %}
+      {% assign note_slug = page.path | split: "/" | last | split: "." | first %}
+      {% assign download_zip = "/downloads/notes/" | append: note_slug | append: ".zip" %}
+      {% assign download_md = "/downloads/notes/" | append: note_slug | append: ".md" %}
+      {% assign has_zip = false %}
+      {% for static_file in site.static_files %}
+        {% if static_file.path == download_zip %}{% assign has_zip = true %}{% endif %}
+      {% endfor %}
+      <div class="note-download">
+        {% if has_zip %}
+          <a class="note-download__link" href="{{ download_zip | relative_url }}" download>Download note (.zip)</a>
+        {% else %}
+          <a class="note-download__link" href="{{ download_md | relative_url }}" download>Download note (.md)</a>
+        {% endif %}
+      </div>
+    {% endif %}
+
     <div class="page__content">
       {{ content }}
     </div>
