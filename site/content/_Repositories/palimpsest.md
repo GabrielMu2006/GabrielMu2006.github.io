@@ -8,11 +8,20 @@ status: "Active"
 link: "https://github.com/GabrielMu2006/Palimpsest"
 ---
 
+## 简介
+
+- 产品类型：自主世界 / 文明 / 个体历史模拟 Sandbox
+- 首发平台：macOS（后续 Web）
+- MVP 语言：中文
+- 开发模式：Agent-first
+- 核心原则：Simulation First / History First / LLM Optional
+- 基准开发设备：Apple Silicon M5 / 16GB Unified Memory
+
 Palimpsest 是一个“Agent-first”的世界 / 文明 / 个体历史模拟 Sandbox 项目（临时工程代号），核心构想来自仓库里只读权威的 `MASTER_SPEC.md`。它的玩法定义不是“基地建设”或“直接控制角色”，而是一种更底层的体验：
 
 > 创建一个世界，让这个世界真实、自主地生活，然后以观察者的身份去观察、研究、追踪和干预它的历史。
 
-没有胜利条件、失败条件或主线任务，乐趣来自 **创造 → 观察 → 发现 → 追踪 → 理解 → 干预 → 继续观察** 的循环。首发 macOS，MVP 语言为中文。目前仓库完成的是 Phase 0 架构验证，完整游戏与 Phase 1 玩法仍按规划推进。
+没有胜利条件、失败条件或主线任务，乐趣来自 **创造 → 观察 → 发现 → 追踪 → 理解 → 干预 → 继续观察** 的循环。目前仓库完成的是 Phase 0 架构验证，完整游戏与 Phase 1 玩法仍按规划推进。
 
 ## 产品构想
 
