@@ -1,5 +1,5 @@
 ---
-title: "Palimpsest 长简介：一个会重写自身历史的世界"
+title: "Palimpsest：一个会重写自身历史的世界"
 collection: Blogs
 type: "Project intro"
 permalink: /Blogs/palimpsest-full-intro/
