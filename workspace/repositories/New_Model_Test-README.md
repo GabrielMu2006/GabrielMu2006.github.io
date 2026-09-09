@@ -15,7 +15,7 @@
 
 本仓库用于公开记录和展示新模型测试。每个阶段保存当期使用的原始 prompt、模型交付物、运行或测试方法、视觉证据以及复盘报告。目标不是只展示“最好看的结果”，而是尽量保留从任务输入到成果、验证和问题分析的完整链路。
 
-当前内容为 **第一阶段（Phase 1）**：使用 15 个任务评估 `DeepSeek-V4.1-Flash-Exp-0910` 在以下能力上的表现：
+当前内容为 **第一阶段（Phase 1）**：两个模型在 15 个任务上的成果、运行证据与独立评价——`DeepSeek-V4.1-Flash-Exp-0910`（DSH harness）与 `Muse Spark 1.3`（opencode harness）。评估的能力包括：
 
 - SVG 视觉生成与精确约束遵循；
 - 单文件网页、游戏和创作工具；
@@ -23,13 +23,18 @@
 - 几何、计算、数据状态与错误处理；
 - 响应式设计、可访问性、视觉完成度和自动化测试。
 
-仓库将保留后续阶段扩展能力。未来可在根目录增加新的模型/阶段文件夹，并继续沿用“任务 → 原始 prompt → 成果 → 测试 → 评估”的归档方式。
+公开展示站 [vibetest.gabrielmu2006.cn](https://vibetest.gabrielmu2006.cn/) 目前收录 2 个模型 / 1 个阶段 / 15 个任务 / 30 条运行 / 60 条评价，共 110 个静态页面与 30 项成果预览，支持中英文切换、任务搜索与分类筛选、同题运行对比、成果预览与深链。
+
+仓库将保留后续阶段扩展能力。未来可在 Test_Results/ 下增加模型文件夹，并在模型目录中增加阶段文件夹，并继续沿用“任务 → 原始 prompt → 成果 → 测试 → 评估”的归档方式。
 
 ### 当前阶段
 
-| 阶段 | 被测模型 | 任务数 | 核心完成率 | 内部综合评估 | 状态 |
-| --- | --- | ---: | ---: | ---: | --- |
-| Phase 1 | DeepSeek-V4.1-Flash-Exp-0910 | 15 | 15/15 | 93.6/100 | 已完成 |
+| 阶段 | 被测模型 | Harness | 任务数 | 核心完成率 | 内部综合评估 | 状态 |
+| --- | --- | --- | ---: | ---: | ---: | --- |
+| Phase 1 | DeepSeek-V4.1-Flash-Exp-0910 | DSH | 15 | 15/15 | 93.6/100（历史 AI 报告引用） | 已完成 |
+| Phase 1 | Muse Spark 1.3 | opencode 1.18.29 | 15 | 15/15 交付（2 题交付方式待改） | 84.9/100（维护 agent 非盲评 v1） | 已完成 |
+
+> 两行的评分来自不同评委与不同口径，**不可直接比较**；Harness、预算与隔离等级也不同。
 
 > 综合分数来自仓库内的阶段性人工与自动化评估，用于总结本次测试，不应被视为跨模型通用排行榜分数。
 
@@ -53,46 +58,72 @@
 | 14 | Meridian Bank 银行网站 | 多页网站 | 9 个页面、计算器与审计工具 |
 | 15 | Shelf 读书追踪 | 数据型 Web 应用 | 领域引擎、UI 与测试 |
 
+### 后续阶段（Phase 2）
+
+Phase 2 的 30 条高级纯创造题（Task 16–45）已写入 [`PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md`](PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md)，强调从空目录起步的复杂系统创作。目前**尚未执行任何模型运行**，因此不计入上表，也不进入展示站生产索引；测试流程与接入步骤见[测试隔离与防答案污染](docs/testing-protocol.md)与[接入操作步骤](docs/adding-results.md)。
+
 ### 仓库结构
 
 ```text
 New_Model_Test/
 ├── README.md
-├── 15_TEST_PROMPTS_BILINGUAL.md
-├── website/                              # Astro 静态展示站
-├── docs/                                 # 数据、验证、部署与维护说明
-└── DeepSeek-V4.1-Flash-Exp-0910_DSH/     # Phase 1
-    ├── README.md                          # 阶段索引与运行说明
-    ├── Reviews/                           # 统计复盘、人工评价与质量评估
-    ├── task-01-.../
-    ├── ...
-    └── task-15-.../
+├── AGENTS.md
+├── PROMPT/
+│   ├── README.md
+│   ├── Phase1_TEST_PROMPTS_BILINGUAL.md
+│   └── PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md   # Phase 2 题目（尚未运行）
+├── Test_Results/
+│   ├── README.md
+│   ├── DeepSeek-V4.1-Flash-Exp-0910_DSH/
+│   │   └── phase-01/
+│   │       ├── README.md
+│   │       ├── Reviews/
+│   │       └── task-01-.../ ... task-15-.../
+│   └── Muse-Spark-1.3_Opencode/
+│       └── phase-01/
+│           ├── README.md
+│           ├── Reviews/
+│           ├── evidence/
+│           └── task-01-.../ ... task-15-.../
+├── test-workspace/            # 后续阶段测试脚手架（隔离规则、启动方案、模板）
+├── website/                   # Astro 展示站、导入器与自动化测试
+├── docs/                      # 数据模型、测试流程、部署与验证记录
+└── .github/workflows/
 ```
 
-未来阶段将以新的同级目录加入；根 README 负责维护阶段索引，阶段目录保存独立、完整的任务与证据。
+后续结果按 Test_Results/模型/阶段/ 加入；根 README 维护索引。接入步骤见 docs/adding-results.md。
 
 ### 关键文档
 
-- [15 条原始 Prompt、双语理论成果与验收内容](15_TEST_PROMPTS_BILINGUAL.md)
-- [第一阶段项目索引与运行说明](DeepSeek-V4.1-Flash-Exp-0910_DSH/README.md)
-- [15 项任务完成质量评估](DeepSeek-V4.1-Flash-Exp-0910_DSH/Reviews/15-任务完成质量评估.md)
-- [任务执行统计与评测复盘](DeepSeek-V4.1-Flash-Exp-0910_DSH/Reviews/DeepSeek-V4.1-Flash-Exp-0910-任务评测复盘.md)
-- [人工评价汇总](DeepSeek-V4.1-Flash-Exp-0910_DSH/Reviews/Personal_Review.md)
+- [Agent 协作规范](AGENTS.md)
+- [结果交接接口](docs/result-interface.md)与[接入操作步骤](docs/adding-results.md)
+- [测试隔离与防答案污染](docs/testing-protocol.md)
+- [测试工作区启动方案](test-workspace/README.md)：按阶段建任务目录、逐题隔离测试、汇总归档。
+- [网站维护、发布及回退](docs/deployment.md)
+
+- [15 条原始 Prompt、双语理论成果与验收内容](PROMPT/Phase1_TEST_PROMPTS_BILINGUAL.md)
+- [30 条 Phase 2 高级创造题（Task 16–45，尚未运行）](PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md)
+- [成果归档索引](Test_Results/README.md)
+- [第一阶段项目索引与运行说明](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/README.md)
+- [Muse Spark 1.3 第一阶段索引](Test_Results/Muse-Spark-1.3_Opencode/phase-01/README.md)
+- [15 项任务完成质量评估](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/15-任务完成质量评估.md)
+- [任务执行统计与评测复盘](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/DeepSeek-V4.1-Flash-Exp-0910-任务评测复盘.md)
+- [人工评价汇总](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/Personal_Review.md)
 
 ### 查看与运行
 
 任务 01–10 的主要成果可以直接打开，无需安装依赖：
 
 ```bash
-open DeepSeek-V4.1-Flash-Exp-0910_DSH/task-01-aevum-luxury-watch-landing-page/index.html
-open DeepSeek-V4.1-Flash-Exp-0910_DSH/task-03-analog-clock-6-25/clock-625.svg
-open DeepSeek-V4.1-Flash-Exp-0910_DSH/task-08-breakout-game/index.html
+open Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/task-01-aevum-luxury-watch-landing-page/index.html
+open Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/task-03-analog-clock-6-25/clock-625.svg
+open Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/task-08-breakout-game/index.html
 ```
 
 任务 11–15 带有项目内测试。多数项目无需 `npm install`，Node.js 主要用于执行测试：
 
 ```bash
-cd DeepSeek-V4.1-Flash-Exp-0910_DSH/task-12-calculator
+cd Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/task-12-calculator
 npm test
 
 cd ../task-15-book-tracker
@@ -103,6 +134,8 @@ npm test
 
 ### 第一阶段结果摘要
 
+**DeepSeek-V4.1-Flash-Exp-0910（DSH harness）**
+
 - 15 个任务均满足原始 prompt 的核心要求；
 - task-11：21 项几何测试与 52 项浏览器检查通过；
 - task-12：198 项引擎检查与 69 项浏览器检查通过；
@@ -110,7 +143,16 @@ npm test
 - task-14：49 项金融断言、73 项交互断言，以及 9 页桌面/移动审计通过；
 - task-15：3,861 项引擎断言与 244 项浏览器检查通过。
 
-更完整的扣分理由、风险和改进优先级见[质量评估报告](DeepSeek-V4.1-Flash-Exp-0910_DSH/Reviews/15-任务完成质量评估.md)。
+更完整的扣分理由、风险和改进优先级见[质量评估报告](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/15-任务完成质量评估.md)。
+
+**Muse Spark 1.3（opencode 1.18.29 harness）**
+
+- 15 个任务全部交付；task-12（计算器）与 task-15（读书追踪）的“未通过”经复核属于**交付方式问题**——交付物使用 ES module，`file://` 直接打开时被浏览器按 CORS 拦截，经 HTTP 提供服务后功能正常，不是功能逻辑缺陷。
+- 评分口径为维护 agent 的**非盲评 v1**（2026-09-09）：每题 73–92 分、平均 84.9/100，与 DeepSeek 的 93.6/100 评委与口径均不同，**不可直接比较**；独立盲评仍待补。
+- 累计用时 25 分 45 秒；178 次工具调用 / 8 次失败；token 过路量 3,669,385（输入 384,338 + 输出 154,563 + 缓存读 3,130,484）；费用 ¥0（contributor-free 档）。
+- 隔离等级为 `workspace-only`（配置 + 提示词约束），污染状态记为 `clean（组织者判定）`，范围仅限已声明的控制措施；判定依据的原始日志未随档案封存，因此不能解释为“训练数据无污染”。
+- 15 个 `prompt.txt` 为按题目文档**事后补录**并逐字比对，不是当时封存的输入副本。
+- 阶段索引、逐题明细与已知限制见 [Muse-Spark-1.3 / Phase 1](Test_Results/Muse-Spark-1.3_Opencode/phase-01/README.md)。
 
 ### 后续阶段约定
 
@@ -135,7 +177,7 @@ npm test
 
 This repository publicly documents and showcases new-model evaluations. Each phase preserves the original prompts, model-produced artifacts, run or test instructions, visual evidence, and retrospective reports. The goal is not to present only the most attractive outputs, but to keep a traceable path from task input to result, verification, and issue analysis.
 
-The current archive is **Phase 1**, consisting of 15 tasks completed with `DeepSeek-V4.1-Flash-Exp-0910`. The suite examines:
+The current archive is **Phase 1**: two models — `DeepSeek-V4.1-Flash-Exp-0910` (DSH harness) and `Muse Spark 1.3` (opencode harness) — on the same 15 tasks, with run evidence and independent reviews. The suite examines:
 
 - SVG generation and compliance with exact visual constraints;
 - self-contained web pages, games, and creative tools;
@@ -143,13 +185,18 @@ The current archive is **Phase 1**, consisting of 15 tasks completed with `DeepS
 - geometry, arithmetic, data state, and error handling;
 - responsive design, accessibility, visual finish, and automated testing.
 
-The repository is designed to grow. Future phases can be added as sibling model or phase directories while retaining the same “task → original prompt → artifact → test → evaluation” archive pattern.
+The public showcase [vibetest.gabrielmu2006.cn](https://vibetest.gabrielmu2006.cn/) currently covers 2 models / 1 phase / 15 tasks / 30 runs / 60 reviews across 110 static pages and 30 artifact previews, with bilingual pages, task search and filters, same-task run comparison, artifact previews and deep links.
+
+The repository is designed to grow. Future results can be added under Test_Results/<model-folder>/phase-NN/ while retaining the same “task → original prompt → artifact → test → evaluation” archive pattern.
 
 ### Current phase
 
-| Phase | Model under test | Tasks | Core completion | Internal evaluation | Status |
-| --- | --- | ---: | ---: | ---: | --- |
-| Phase 1 | DeepSeek-V4.1-Flash-Exp-0910 | 15 | 15/15 | 93.6/100 | Complete |
+| Phase | Model under test | Harness | Tasks | Core completion | Internal evaluation | Status |
+| --- | --- | --- | ---: | ---: | ---: | --- |
+| Phase 1 | DeepSeek-V4.1-Flash-Exp-0910 | DSH | 15 | 15/15 | 93.6/100 (quoted historical AI report) | Complete |
+| Phase 1 | Muse Spark 1.3 | opencode 1.18.29 | 15 | 15/15 delivered (2 flagged as delivery-method issues) | 84.9/100 (maintenance-agent non-blind v1) | Complete |
+
+> The two rows come from different reviewers and rubrics and must not be compared directly; harness, budget and isolation level also differ.
 
 > The aggregate score comes from the human and automated evaluation stored in this repository. It summarizes this phase and is not intended as a universal cross-model leaderboard score.
 
@@ -173,44 +220,72 @@ The repository is designed to grow. Future phases can be added as sibling model 
 | 14 | Meridian Bank website | Multi-page website | 9 pages, calculators, and audit tools |
 | 15 | Shelf book tracker | Data-driven web app | Domain engine, UI, and tests |
 
+### Later phase (Phase 2)
+
+Phase 2 adds 30 advanced creation prompts (Task 16–45) in [`PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md`](PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md), focused on complex systems built from an empty directory. **No model run has been executed for it yet**, so it is not part of the table above and is not in the showcase production index; see the [test isolation and anti-contamination protocol](docs/testing-protocol.md) and the [integration workflow](docs/adding-results.md).
+
 ### Repository layout
 
 ```text
 New_Model_Test/
 ├── README.md
-├── 15_TEST_PROMPTS_BILINGUAL.md
-└── DeepSeek-V4.1-Flash-Exp-0910_DSH/     # Phase 1
-    ├── README.md                          # Phase index and run instructions
-    ├── Reviews/                           # Metrics, human review, and quality report
-    ├── task-01-.../
-    ├── ...
-    └── task-15-.../
+├── AGENTS.md
+├── PROMPT/
+│   ├── README.md
+│   ├── Phase1_TEST_PROMPTS_BILINGUAL.md
+│   └── PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md   # Phase 2 prompts (not run yet)
+├── Test_Results/
+│   ├── README.md
+│   ├── DeepSeek-V4.1-Flash-Exp-0910_DSH/
+│   │   └── phase-01/
+│   │       ├── README.md
+│   │       ├── Reviews/
+│   │       └── task-01-.../ ... task-15-.../
+│   └── Muse-Spark-1.3_Opencode/
+│       └── phase-01/
+│           ├── README.md
+│           ├── Reviews/
+│           ├── evidence/
+│           └── task-01-.../ ... task-15-.../
+├── test-workspace/            # Test scaffolding for later phases (isolation rules, runbook, templates)
+├── website/                   # Astro showcase site, importer and automated tests
+├── docs/                      # Data model, test protocol, deployment and verification records
+└── .github/workflows/
 ```
 
-Future phases should be added as sibling directories. The root README maintains the phase index, while every phase remains a self-contained collection of tasks and evidence.
+Future phases live inside each model folder under Test_Results/. The root README maintains the index; see docs/adding-results.md for integration requirements.
 
 ### Key documents
 
-- [15 original prompts with bilingual expected outcomes and acceptance checks](15_TEST_PROMPTS_BILINGUAL.md)
-- [Phase 1 index and run instructions](DeepSeek-V4.1-Flash-Exp-0910_DSH/README.md)
-- [Quality evaluation of all 15 completed tasks](DeepSeek-V4.1-Flash-Exp-0910_DSH/Reviews/15-任务完成质量评估.md)
-- [Execution metrics and evaluation retrospective](DeepSeek-V4.1-Flash-Exp-0910_DSH/Reviews/DeepSeek-V4.1-Flash-Exp-0910-任务评测复盘.md)
-- [Human-review summary](DeepSeek-V4.1-Flash-Exp-0910_DSH/Reviews/Personal_Review.md)
+- [Agent instructions](AGENTS.md)
+- [Result interface](docs/result-interface.md) and [integration workflow](docs/adding-results.md)
+- [Test isolation and anti-contamination protocol](docs/testing-protocol.md)
+- [Test workspace runbook](test-workspace/README.md): phase scaffolding, per-task isolation, summary and archiving.
+- [Deployment and rollback](docs/deployment.md)
+
+- [15 original prompts with bilingual expected outcomes and acceptance checks](PROMPT/Phase1_TEST_PROMPTS_BILINGUAL.md)
+- [30 Phase 2 advanced creation prompts (Task 16–45, not run yet)](PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md)
+- [Result archive index](Test_Results/README.md)
+- [Phase 1 index and run instructions](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/README.md)
+- [Muse Spark 1.3 Phase 1 index](Test_Results/Muse-Spark-1.3_Opencode/phase-01/README.md)
+- [Quality evaluation of all 15 completed tasks](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/15-任务完成质量评估.md)
+- [Execution metrics and evaluation retrospective](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/DeepSeek-V4.1-Flash-Exp-0910-任务评测复盘.md)
+- [Human-review summary](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/Personal_Review.md)
 
 ### View and run
 
 The primary artifacts for tasks 01–10 open directly without installing dependencies:
 
 ```bash
-open DeepSeek-V4.1-Flash-Exp-0910_DSH/task-01-aevum-luxury-watch-landing-page/index.html
-open DeepSeek-V4.1-Flash-Exp-0910_DSH/task-03-analog-clock-6-25/clock-625.svg
-open DeepSeek-V4.1-Flash-Exp-0910_DSH/task-08-breakout-game/index.html
+open Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/task-01-aevum-luxury-watch-landing-page/index.html
+open Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/task-03-analog-clock-6-25/clock-625.svg
+open Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/task-08-breakout-game/index.html
 ```
 
 Tasks 11–15 include in-project tests. Most do not require `npm install`; Node.js is primarily used as the test runner:
 
 ```bash
-cd DeepSeek-V4.1-Flash-Exp-0910_DSH/task-12-calculator
+cd Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/task-12-calculator
 npm test
 
 cd ../task-15-book-tracker
@@ -221,6 +296,8 @@ See each task's `README.md` for full commands and known limitations. In particul
 
 ### Phase 1 result summary
 
+**DeepSeek-V4.1-Flash-Exp-0910 (DSH harness)**
+
 - All 15 tasks satisfy the core requirements of their original prompts.
 - Task 11: 21 geometry tests and 52 browser checks passed.
 - Task 12: 198 engine checks and 69 browser checks passed.
@@ -228,7 +305,16 @@ See each task's `README.md` for full commands and known limitations. In particul
 - Task 14: 49 finance assertions, 73 interaction assertions, and desktop/mobile audits across all 9 pages passed.
 - Task 15: 3,861 engine assertions and 244 browser checks passed.
 
-See the [quality evaluation report](DeepSeek-V4.1-Flash-Exp-0910_DSH/Reviews/15-任务完成质量评估.md) for detailed deductions, risks, and prioritized improvements.
+See the [quality evaluation report](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/15-任务完成质量评估.md) for detailed deductions, risks, and prioritized improvements.
+
+**Muse Spark 1.3 (opencode 1.18.29 harness)**
+
+- All 15 tasks were delivered; the "failed" verdicts for task-12 (calculator) and task-15 (book tracker) were re-checked as **delivery-method issues** — the artifacts use ES modules, which browsers block under `file://` for CORS reasons, and they work once served over HTTP. They are not functional defects.
+- Scores come from the maintenance agent's **non-blind v1 review** (2026-09-09): 73–92 per task, 84.9/100 average. The reviewer and rubric differ from the DeepSeek 93.6/100, so the two **must not be compared directly**; an independent blind review is still pending.
+- 25 min 45 s total; 178 tool calls / 8 failures; 3,669,385 tokens passed through (384,338 input + 154,563 output + 3,130,484 cache reads); cost ¥0 (contributor-free tier).
+- Isolation level `workspace-only` (configuration plus prompt constraints) with contamination status `clean (organizer verdict)`, limited to the declared controls. The evidence behind that verdict was not archived, so it cannot be read as "no training-data contamination".
+- The 15 `prompt.txt` files are **post-hoc transcriptions** checked word by word against the task document, not input copies sealed at run time.
+- See the [Muse-Spark-1.3 / Phase 1 index](Test_Results/Muse-Spark-1.3_Opencode/phase-01/README.md) for per-task detail and known limitations.
 
 ### Convention for future phases
 
