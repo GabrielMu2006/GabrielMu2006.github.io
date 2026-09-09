@@ -5,6 +5,10 @@
 
 [中文](#中文说明) · [English](#english)
 
+**公开展示站 / Public showcase:** https://vibetest.gabrielmu2006.cn/
+
+浏览双语任务、真实成果预览、运行指标、独立评价来源与同题对比。Browse bilingual tasks, live artifacts, run metrics, independent reviews, and same-task comparisons.
+
 ## 中文说明
 
 ### 项目简介
@@ -55,6 +59,8 @@
 New_Model_Test/
 ├── README.md
 ├── 15_TEST_PROMPTS_BILINGUAL.md
+├── website/                              # Astro 静态展示站
+├── docs/                                 # 数据、验证、部署与维护说明
 └── DeepSeek-V4.1-Flash-Exp-0910_DSH/     # Phase 1
     ├── README.md                          # 阶段索引与运行说明
     ├── Reviews/                           # 统计复盘、人工评价与质量评估
