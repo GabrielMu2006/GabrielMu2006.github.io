@@ -51,7 +51,7 @@ This file is the single, complete agent management guide for this repository. Ev
 2. 完整阅读本文件。
 3. 运行 `git status --short`。
 4. 保留所有已有修改；不得撤销并非当前 Agent 创建的改动。
-5. 判断任务属于 Note、Blog、Repository、普通维护还是视觉样式修改。
+5. 判断任务属于 Note、Blog、Repository、Link、普通维护还是视觉样式修改。
 6. 创建内容前至少查看同一 collection 中一个现有条目。
 7. 优先沿用仓库现有的 Jekyll、AcademicPages 和 Minimal Mistakes 模式。
 8. 搜索优先使用 `rg` / `rg --files`，手工修改优先使用 `apply_patch`。
@@ -89,7 +89,7 @@ git push origin main
 
 ## 4. 内容通用规则
 
-Note、Blog 和 Repository 都使用带 YAML front matter 的 Markdown 文件。
+Note、Blog、Repository 和 Link 都使用带 YAML front matter 的 Markdown 文件。
 
 - 文件名使用 ASCII 小写字母和连字符，例如 `transformer-lecture-2.md`。
 - 文件名 slug 必须与 `permalink` 最后一段一致。
@@ -262,9 +262,38 @@ link: "https://github.com/OWNER/REPOSITORY"
 **Repository.** [OWNER/REPOSITORY](https://github.com/OWNER/REPOSITORY)
 ```
 
-发布后确认主页项目区域和 `/Repositories/` 中出现该条目，详情页和 GitHub 链接均可打开且不返回 404。
+发布后确认主页项目区域和 `/Repositories/` 中出现该条目，详情页和 GitHub 链接均可打开且不返回 404。项目若有独立展示站，在正文中给出其公开地址，并在 `/Links/` 建一条对应条目（见第 8 节）。
 
-## 8. 简单维护
+## 8. 发布 Link
+
+Link 条目位于 `site/content/_Links/*.md`，显示在 `/Links/`，用于收录外部站点、项目展示站、资源和参考链接。
+
+front matter 示例：
+
+```yaml
+---
+title: "Site or resource name"
+collection: Links
+type: "Project site"
+permalink: /Links/link-slug/
+date: YYYY-MM-DD
+status: "Active"
+link: "https://example.com/"
+---
+```
+
+规则：
+
+1. 一个条目只代表一个外部地址；`link` 是卡片与详情页上的跳转地址，正文用一两句话说明它是什么、为什么值得点开，不复制对方站点的全文。
+2. permalink 必须唯一并位于 `/Links/` 下，文件名 slug 与 permalink 最后一段一致。
+3. `link` 必须指向可匿名访问的公开地址；发布前确认不返回 404，不得收录私有链接、内网地址或需要登录的页面。
+4. 自建项目若有独立展示站，应同时保留 `/Repositories/` 条目，并在两边正文中互相引用。
+5. `/Links/` 按日期倒序显示标题、日期、状态、首段摘要和 Project link；单条目不需要手工加入导航。
+6. Links 不在 `project/test/site_structure_test.rb` 的发布契约校验范围内（该校验覆盖 Notes、Repositories、Blogs），但仍需 `title`、`collection`、`permalink`、`date` 才能正确渲染，建议同时填写 `type` 与 `status`。
+
+发布后确认 `/Links/` 与详情 permalink 均可打开，且 `link` 指向的外部地址返回 200。
+
+## 9. 简单维护
 
 个人资料优先修改 `site/_config.yml` 中的：
 
@@ -296,7 +325,7 @@ Guestbook 使用 Giscus 和 GitHub Discussions：
 - 网站通过 `.github/workflows/pages.yml` 从 `site/` 构建；Pages 发布源应设置为 GitHub Actions。
 - DNS 或 Pages 设置不得在普通维护中擅自修改。
 
-## 9. 视觉样式修改与恢复机制
+## 10. 视觉样式修改与恢复机制
 
 视觉样式修改包括颜色、字体、间距、主页布局、卡片、导航栏、头像区域、响应式/移动端样式、深色主题以及明显改变页面外观的模板或 JavaScript 修改。
 
@@ -313,7 +342,7 @@ Guestbook 使用 Giscus 和 GitHub Discussions：
 
 如果用户不同意样式方案，不得提交或推送，也不得擅自删除未提交修改；询问用户是保留分支供后续调整，还是明确放弃。
 
-## 10. 验证与发布
+## 11. 验证与发布
 
 所有内容发布和维护至少运行：
 
@@ -340,7 +369,7 @@ bundle exec jekyll serve --source site --config site/_config.yml --destination _
 
 普通维护检查通过后，只暂存相关文件，自动提交并推送 `main`。推送后等待 `.github/workflows/pages.yml` 的 GitHub Pages 工作流完成，并尽可能检查正式列表页和详情 permalink。仅本地构建成功不能证明线上部署已经完成。
 
-## 11. 新 Agent 可复用请求
+## 12. 新 Agent 可复用请求
 
 Note：
 
@@ -413,7 +442,7 @@ Main files:
 2. Read this file completely.
 3. Run `git status --short`.
 4. Preserve all existing changes. Never revert changes that were not created by the current agent.
-5. Classify the task as Note, Blog, Repository, routine maintenance, or visual styling.
+5. Classify the task as Note, Blog, Repository, Link, routine maintenance, or visual styling.
 6. Before creating content, inspect at least one existing entry in the same collection.
 7. Prefer the Jekyll, AcademicPages, and Minimal Mistakes patterns already used in the repository.
 8. Prefer `rg` / `rg --files` for searches and `apply_patch` for manual edits.
@@ -451,7 +480,7 @@ Never proactively run destructive commands such as `rm`, `git reset --hard`, or 
 
 ## 4. Shared Content Rules
 
-Notes, Blogs, and Repositories use Markdown files with YAML front matter.
+Notes, Blogs, Repositories, and Links use Markdown files with YAML front matter.
 
 - Use ASCII lowercase, hyphen-separated filenames such as `transformer-lecture-2.md`.
 - Keep the filename slug identical to the final segment of `permalink`.
@@ -624,9 +653,38 @@ Publishing steps:
 **Repository.** [OWNER/REPOSITORY](https://github.com/OWNER/REPOSITORY)
 ```
 
-After publishing, confirm that the entry appears in the homepage project area and on `/Repositories/`, and that both the detail page and GitHub link open without a 404.
+After publishing, confirm that the entry appears in the homepage project area and on `/Repositories/`, and that both the detail page and GitHub link open without a 404. When a project has its own showcase site, include its public address in the body and add a matching `/Links/` entry (see section 8).
 
-## 8. Routine Maintenance
+## 8. Publishing a Link Entry
+
+Link entries live in `site/content/_Links/*.md` and appear on `/Links/`. They record external sites, project showcases, resources, and references.
+
+Example front matter:
+
+```yaml
+---
+title: "Site or resource name"
+collection: Links
+type: "Project site"
+permalink: /Links/link-slug/
+date: YYYY-MM-DD
+status: "Active"
+link: "https://example.com/"
+---
+```
+
+Rules:
+
+1. One entry represents one external address. `link` is the target used by the card and the detail page; the body explains in one or two sentences what it is and why it is worth opening, without copying the other site's content.
+2. The permalink must be unique and under `/Links/`, and the filename slug must match its final segment.
+3. `link` must point to a publicly reachable address that needs no login; confirm it does not return a 404, and never record private links, intranet addresses, or authenticated pages.
+4. When a project of your own has a standalone showcase site, keep its `/Repositories/` entry and cross-reference the two in both bodies.
+5. `/Links/` lists entries by descending date with title, date, status, first-paragraph excerpt, and Project link; no manual navigation entry is needed.
+6. Links is outside the publishing-contract check in `project/test/site_structure_test.rb` (which covers Notes, Repositories, and Blogs), but it still needs `title`, `collection`, `permalink`, and `date` to render; fill in `type` and `status` as well.
+
+After publishing, confirm that `/Links/` and the detail permalink open, and that the external `link` returns 200.
+
+## 9. Routine Maintenance
 
 For personal information, update these `site/_config.yml` fields first:
 
@@ -658,7 +716,7 @@ Domain and deployment:
 - The site is built from `site/` by `.github/workflows/pages.yml`; the Pages publishing source must be GitHub Actions.
 - Do not change DNS or Pages settings as part of routine maintenance.
 
-## 9. Visual Style Changes and Recovery
+## 10. Visual Style Changes and Recovery
 
 Visual style changes include colors, typography, spacing, homepage layout, cards, navigation, avatar area, responsive/mobile styling, dark theme, and template or JavaScript changes that materially alter the site's appearance.
 
@@ -675,7 +733,7 @@ Never commit visual changes directly on `main`. Follow this workflow:
 
 If the user rejects a style proposal, do not commit, push, or silently discard the uncommitted changes. Ask whether to keep the branch for revision or explicitly abandon it.
 
-## 10. Verification and Publishing
+## 11. Verification and Publishing
 
 Run at least the following for every content publication and maintenance task:
 
@@ -702,7 +760,7 @@ and visit `http://127.0.0.1:4000/`. Stop the local service cleanly before finish
 
 After routine maintenance passes verification, stage only the related files, commit automatically, and push `main`. After pushing, wait for the GitHub Pages workflow in `.github/workflows/pages.yml` and check the live archive and detail permalink whenever possible. A successful local build alone does not prove that GitHub Pages deployed the new commit.
 
-## 11. Reusable Requests for a New Agent
+## 12. Reusable Requests for a New Agent
 
 Note:
 
