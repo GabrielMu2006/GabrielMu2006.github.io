@@ -1,3 +1,5 @@
+Encoding.default_external = Encoding::UTF_8
+
 require "minitest/autorun"
 require "date"
 require "yaml"
