@@ -70,6 +70,7 @@ class SiteStructureTest < Minitest::Test
       Gemfile.lock
       README.md
       project/docs/README.md
+      project/scripts/build_site.sh
       project/test/site_structure_test.rb
       workspace/README.md
       .github/workflows/pages.yml

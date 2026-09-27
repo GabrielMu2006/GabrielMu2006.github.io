@@ -28,13 +28,17 @@ bundle exec jekyll serve --source site --config site/_config.yml --destination _
 
 Open `http://127.0.0.1:4000/`. Generated output and local dependency/cache directories are intentionally ignored by Git.
 
+If the shell has no UTF-8 locale (`echo "$LANG"` is empty), run `export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` before `jekyll serve`; otherwise the same US-ASCII decoding problem described under Verification aborts the server.
+
 ## Verification
 
 ```bash
 ruby project/test/site_structure_test.rb
-bundle exec jekyll build --source site --config site/_config.yml --destination _site
+bash project/scripts/build_site.sh
 git diff --check
 ```
+
+`build_site.sh` runs the same `bundle exec jekyll build --source site --config site/_config.yml --destination _site` command with a UTF-8 locale forced: a shell with `LANG` unset makes Ruby read files as US-ASCII and the build aborts with `invalid byte sequence in US-ASCII` on the site's Chinese content.
 
 The structure suite validates the canonical domain, organized source layout, navigation, collection metadata, permalink conventions, Blog ordering, integration wiring, and deployment workflow.
 

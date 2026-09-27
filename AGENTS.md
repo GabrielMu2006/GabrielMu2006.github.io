@@ -348,9 +348,11 @@ Guestbook 使用 Giscus 和 GitHub Discussions：
 
 ```bash
 ruby project/test/site_structure_test.rb
-bundle exec jekyll build --source site --config site/_config.yml --destination _site
+bash project/scripts/build_site.sh
 git diff --check
 ```
+
+`build_site.sh` 只是把 `bundle exec jekyll build --source site --config site/_config.yml --destination _site` 包了一层 UTF-8 locale：shell 未设置 `LANG` 时 Ruby 会退回 US-ASCII，Jekyll 处理中文内容时报 `invalid byte sequence in US-ASCII`（在 `_config.yml` 里加 `encoding: utf-8` 无效，已实测）。需要直接运行等价命令、或运行下面的 `jekyll serve` 时，先 `export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8`。
 
 然后检查：
 
@@ -739,9 +741,11 @@ Run at least the following for every content publication and maintenance task:
 
 ```bash
 ruby project/test/site_structure_test.rb
-bundle exec jekyll build --source site --config site/_config.yml --destination _site
+bash project/scripts/build_site.sh
 git diff --check
 ```
+
+`build_site.sh` is a thin wrapper around `bundle exec jekyll build --source site --config site/_config.yml --destination _site` that guarantees a UTF-8 locale: with `LANG` unset, Ruby falls back to US-ASCII and Jekyll aborts with `invalid byte sequence in US-ASCII` while processing the site's Chinese content (adding `encoding: utf-8` to `_config.yml` does not help; tested). When running the equivalent command directly, or running the `jekyll serve` command below, export `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` first.
 
 Then review:
 
