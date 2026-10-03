@@ -10,6 +10,12 @@ link: "https://github.com/GabrielMu2006/DraftZero"
 
 DraftZero（无限草稿室）是面向独立创作者的桌面应用（macOS + Windows）：把散落在各处的未完成草稿、网页与 GitHub 链接收进一个完全本机的工作区，再用离线语义模型提示「这些想法可能属于同一个项目」，每条建议都附原文证据，接受与否由本人决定。无账号、无云端、无遥测；工作区可经 `.dzarchive` 档案在 Mac 与 Windows 之间双向迁移。当前版本 `v0.2.0`，Releases 提供 macOS 与 Windows 安装包，均为未签名的预览版。
 
+## 界面预览
+
+![线索台：左侧是「同一项目线索」与「可能重复」两个待审队列，右侧显示草稿内容](/assets/images/repositories/draftzero/suggestion-queue.png)
+
+![每条归类建议都附能定位到原文的对照证据](/assets/images/repositories/draftzero/suggestion-evidence.png)
+
 ## 核心能力
 
 - **收纳**：拖入 TXT / Markdown / PDF，或粘贴网页与 GitHub 链接；导入逐项报告，重复有提示，原文件永不改动。PDF 支持应用内翻页预览，扫描版会标注「无可用于关联的文字」。

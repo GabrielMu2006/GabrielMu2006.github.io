@@ -10,6 +10,10 @@ link: "https://github.com/GabrielMu2006/WindowGarden"
 
 WindowGarden（窗口花园）是一个 macOS 桌面陪伴应用：一个真正的 WidgetKit 系统小组件，在桌面上种一座随使用状态慢慢生长的手绘小花园。产品规格见 `SPEC.md`，插画生成记录与换装指南见 `ART_PROMPTS.md`，MIT 协议。
 
+## 组件预览
+
+![桌面组件形态预览：小尺寸与中尺寸的花园，含昼夜氛围与访客动物](/assets/images/repositories/windowgarden/widget-preview.png)
+
 ## 架构
 
 - **菜单栏引擎**（`WindowGarden.app`，无 Dock 图标）：常驻后台，测量活跃时长、推进植物生长、记录离开与回归，并把变化推送给组件；它是花园唯一的计时器。
