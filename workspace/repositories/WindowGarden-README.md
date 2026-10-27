@@ -37,7 +37,7 @@ open /Applications/WindowGarden.app   # 启动引擎（菜单栏出现叶子图�
 
 **三步换装：**
 
-1. 菜单栏叶子图标 → **打开插画文件夹**（即 `~/Library/Application Support/WindowGarden/art/`）
+1. 菜单栏叶子图标 → **打开插画文件夹**（即 `~/Library/Group Containers/group.com.windowgarden.app/art/`）
 2. 用同名 PNG 覆盖想换的图
 3. 等几秒自动生效；急的话点菜单栏「刷新组件」立即请求刷新
 
@@ -57,7 +57,7 @@ open /Applications/WindowGarden.app   # 启动引擎（菜单栏出现叶子图�
 
 - 应用内置的同名插画只是**首次启动的默认素材**，复制到本地目录后不会再覆盖你的自定义文件
 - 渲染时按高度缩放、按底边对齐；昼夜氛围由程序叠加色调，无需为每个时段单独出图
-- 重置：删除 `~/Library/Application Support/WindowGarden/state.json`（花园进度）或整个 `WindowGarden` 目录（含插画）
+- 重置：删除 `~/Library/Group Containers/group.com.windowgarden.app/state.json`（花园进度）或整个 `group.com.windowgarden.app` 目录（含插画）
 - 可选质检：`swift scripts/check_art.swift` 批量检查透明底、贴底对齐与白底残留
 - 想用 AI 生成整套素材：[ART_PROMPTS.md](ART_PROMPTS.md) 内含全部生成提示词
 
@@ -79,13 +79,14 @@ WG_STATE_DIR=/tmp/wg_test make_app.sh …          # 隔离状态目录
 - 组件扩展**必须沙盒化**才会被系统组件门禁收录（未沙盒的扩展被静默忽略）
 - 组件库只收录 **/Applications** 标准位置的应用
 - **SwiftPM（`swift build`）直接产出的组件扩展会被系统静默拒绝**——必须经 Xcode/xcodebuild 构建（本仓库因此采用 `.xcodeproj` + 引用本地 SwiftPM 包的混合结构）
+- 沙盒组件**读不到** `~/Library/Application Support`：Foundation 在沙盒内会把该目录重定向到组件自己的容器，temporary-exception 对 ad-hoc/开发签名也不生效——引擎与组件的共享数据必须走 **App Group 容器**（`~/Library/Group Containers/group.com.windowgarden.app/`）
 
 ## 卸载
 
 1. 菜单栏 → 关闭「开机自动启动」（或系统设置 → 登录项中移除 WindowGarden）
 2. 长按桌面上的花园组件 → 移除
 3. 菜单栏 → 退出，删除 `/Applications/WindowGarden.app`
-4. 删除 `~/Library/Application Support/WindowGarden/`
+4. 删除 `~/Library/Group Containers/group.com.windowgarden.app/`（旧版本是 `~/Library/Application Support/WindowGarden/`）
 
 ## 许可证
 

@@ -16,6 +16,7 @@ All data stays on your Mac. No scraping, no cookies, no MITM.
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [First-run configuration](#first-run-configuration)
+- [Coding Plan quotas (ZCode / Kimi / Qoder / Codex)](#coding-plan-quotas-zcode--kimi--qoder--codex)
 - [Daily usage guide](#daily-usage-guide)
 - [How the numbers work](#how-the-numbers-work)
 - [DeepSeekSync (optional auto-export)](#deepseeksync-optional-auto-export)
@@ -26,17 +27,24 @@ All data stays on your Mac. No scraping, no cookies, no MITM.
 
 ## Features
 
-- **Menu bar quick panel** - balance, today's cost, 7-day mini trend, top API keys, one click to the dashboard
-- **Floating dashboard** - metric cards (balance / today / period cost / requests / tokens), 7D / 30D / This Month / custom ranges, bar chart with per-day per-key hover tooltip, daily history with day detail, multi-select API key filter
+- **Menu bar quick panel** - DeepSeek balance + today in one row, coding-plan rings (ZCode / Kimi / Qoder) with reset times, one click to the dashboard
+- **Floating dashboard** - equal quarters for DeepSeek / ZCode / Kimi / Qoder, period stats beside the filters, bar chart with per-day per-key hover tooltip, daily history with day detail, multi-select API key filter
+- **macOS system widgets (WidgetKit)** - optional native widgets for the desktop / Notification Center: Coding Plan rings (medium) and DeepSeek balance (small), fed by the app's refresh cycle
+- **Desktop widgets** - desktop-level widget rows, one per provider (ZCode 5h+weekly, Kimi 5h+weekly, Qoder monthly credits + org pool, DeepSeek balance + today); drag to move, click opens the dashboard, right-click for actions (toggle Option+W)
+- **ZCode (GLM Coding Plan) quota** - 5-hour and weekly windows with reset times, via the same quota-monitor endpoint the official glm-plan-usage plugin uses; the Coding Plan key lives in its own Keychain service, quota refresh is throttled to once per 5 minutes
+- **Kimi (Kimi Code) quota** - weekly and 5-hour windows auto-detected from the Kimi CLI credential (~/.kimi-code); expired tokens refresh themselves with the stored refresh token (rotated tokens written back, lineage-checked), so no manual CLI runs
+- **Qoder (CN) quota** - monthly credit pool (and the team org resource package when provisioned), auto-detected from the Qoder desktop app's encrypted auth file (Keychain SafeStorage -> AES decrypt, read-only); the token lives about a month
+- **Codex (ChatGPT plan) quota** - 5-hour and weekly rate-limit windows auto-detected from the Codex CLI credential (~/.codex/auth.json); the ~10-day token auto-refreshes (rotating, lineage-checked write-back). Optional proxy setting (off by default) for networks where chatgpt.com is unreachable; when the endpoint can't be reached, API Meter falls back to the rate limits the CLI writes into its session log
 - **Per-key cost breakdown** - derived from the official export's `price x amount` rows and cross-checked against billing totals (imports use replace semantics, so re-imports never double-count)
 - **Balance-derived Today** - today's cost comes from balance snapshots (yesterday's baseline minus today, top-ups detected and ignored); official exports stay authoritative for completed days
 - **Daily export auto-sync** - optional DeepSeekSync module downloads the official usage export once per day at 00:30 (catch-up on launch/wake) and imports it automatically
-- **Extras** - balance alerts with anti-spam, launch at login, dock icon toggle, global shortcut (default Option+Space), pin / mini mode, window state restore, dark/light mode, macOS 26 Liquid Glass buttons
+- **Extras** - balance alerts with anti-spam, launch at login, dock icon toggle, global shortcuts (Option+Space dashboard, Option+W widgets), window state restore, dark/light mode, macOS 26 Liquid Glass buttons
 
 ## Requirements
 
 - macOS 15 or later
 - The prebuilt DMG is Apple Silicon (arm64). Intel Macs: build from source (see [Development](#development)).
+- Building from source requires Xcode 26+ (macOS 26 SDK, for the Liquid Glass button styles); the app itself runs on macOS 15+.
 
 ## Installation
 
@@ -101,6 +109,82 @@ If the system prompt was dismissed: System Settings -> Notifications -> API Mete
 - **Global Shortcut**: default Option+Space; record your own combination.
 - **Appearance**: System / Light / Dark.
 
+## Coding Plan quotas (ZCode / Kimi / Qoder / Codex)
+
+All providers feed the menu bar panel, the dashboard and the desktop
+widgets. Snapshots are kept locally for 30 days; automatic refresh is
+throttled to one request per 5 minutes per provider.
+
+### ZCode (GLM Coding Plan) - paste an API key
+
+1. Create an API key in your provider console (BigModel China or Z.ai
+   global, Coding Plan section).
+2. Settings -> Coding Plans -> paste the key -> **Save to Keychain**.
+3. Pick the region (BigModel China = open.bigmodel.cn, Z.ai global =
+   api.z.ai) and click **Test Connection**. Your 5-hour and weekly windows
+   (remaining % + reset time) now appear everywhere.
+
+### Kimi (Kimi Code) - automatic
+
+- Install and log in to the Kimi CLI once (`kimi login`). API Meter reads
+  `~/.kimi-code/credentials/kimi-code.json` read-only.
+- The access token lives ~15 minutes; API Meter refreshes it by itself
+  with the stored refresh token and writes the rotated tokens back, so the
+  CLI keeps working. Only if the refresh token itself dies do you need
+  `kimi login` again.
+
+### Qoder (CN) - automatic
+
+- Install and log in to the Qoder CN desktop app. API Meter decrypts its
+  auth file read-only; macOS asks once for keychain access - choose
+  **Always Allow**.
+- The token lives about a month (expiry shown in Settings -> Coding
+  Plans). Your monthly credit pool appears immediately; the team org
+  resource pool shows up automatically once your org provisions one.
+
+### Codex (ChatGPT plan) - automatic
+
+- Install and run `codex login` once. API Meter reads `~/.codex/auth.json`
+  read-only; the ~10-day access token refreshes itself with the stored
+  refresh token (rotating, lineage-checked write-back), so the CLI keeps
+  working. Only a dead refresh token needs `codex login` again.
+- The usage endpoint is chatgpt.com, which is unreachable on some networks
+  (URLSession ignores environment-variable proxies). If your Codex CLI
+  works through a local proxy, enable **Settings -> Coding Plans -> Codex ->
+  Use proxy for Codex requests** and enter the same address, e.g.
+  `http://127.0.0.1:8080` or `socks5://127.0.0.1:7890`. The setting is off
+  by default and only affects API Meter's own quota request.
+- When the endpoint is unreachable anyway, API Meter falls back to the
+  rate limits the Codex CLI records in its session log, so the card still
+  shows your last known windows (as of your latest Codex use).
+
+### Desktop widgets (default shortcut Option+W)
+
+- Enable in Settings -> General (or Settings -> Coding Plans -> Desktop
+  Widgets). One row per provider appears at desktop level: ZCode 5h +
+  weekly, Kimi 5h + weekly, Qoder monthly + org pool, DeepSeek balance +
+  today.
+- Drag to move (position remembered), click a card to open the dashboard,
+  right-click for actions: open dashboard / click-through (pure display)
+  mode / refresh / hide.
+
+### macOS system widgets (WidgetKit, optional)
+
+- The app also ships two native macOS widgets you can place on the desktop
+  or in Notification Center (long-press the desktop / open Notification
+  Center -> Edit Widgets -> search "API Meter"):
+  - **Coding Plan 额度** (medium / large): ring cells for ZCode / Kimi /
+    Qoder / Codex with remaining % and live 5-hour reset countdowns; the
+    large size adds a DeepSeek balance + today header, per-window remaining
+    amounts and reset dates - the whole panel in one widget.
+  - **DeepSeek 余额** (small): current balance and today's spend.
+- Data comes from the app itself: every successful refresh writes a
+  snapshot and reloads the widget timelines, so the widgets stay as fresh
+  as the app (the extension is sandboxed, reads only that snapshot file,
+  and never touches your keys or the network).
+- These coexist with the custom desktop widget panel above; use whichever
+  fits. Clicking a system widget opens API Meter.
+
 ## Daily usage guide
 
 | Where | What you get |
@@ -163,6 +247,12 @@ A standalone CLI (Node + Playwright) that opens the official usage page in its
 OWN browser profile, clicks the official Export button and downloads the ZIP.
 The app runs it once per day at 00:30 (or at the next launch/wake if missed).
 
+**One-click setup (v1.3.0):** if no path is configured, API Meter asks at launch
+whether to download and install the module for you (source-only archive from
+GitHub, then setup-runtime.sh downloads portable Node + Chromium, ~450MB once,
+then the DeepSeek login window opens automatically). The managed copy lives in
+~/Library/Application Support/APIMeter/DeepSeekSync. Manual steps (also fine):
+
 ```bash
 cd DeepSeekSync
 ./scripts/setup-runtime.sh   # bundles portable Node + installs Playwright + Chromium (no system install)
@@ -175,9 +265,10 @@ cd DeepSeekSync
 ```
 
 Then tell the app where the folder lives: **Settings -> Data -> DeepSeekSync path**
-(paste the absolute path of the DeepSeekSync directory). The daily sync then
-downloads AND imports automatically. The Refresh button only updates the
-balance - it never triggers a sync.
+(paste the absolute path of the DeepSeekSync directory), or use **DeepSeekSync
+Setup -> 自动下载并安装** in the same screen. The daily sync then downloads AND
+imports automatically. The Refresh button only updates the balance - it never
+triggers a sync.
 
 Security notes: it never reads your normal browser's cookies, never stores your
 DeepSeek username or password, and never calls unpublished APIs.
@@ -185,7 +276,7 @@ DeepSeek username or password, and never calls unpublished APIs.
 ## Development
 
 ```bash
-swift build && swift test        # core library + CLI + 64 unit tests
+swift build && swift test        # core library + CLI + 80 unit tests
 .build/debug/apimeter selfcheck  # end-to-end self checks (keychain/db/csv/pricing)
 .build/debug/apimeter help
 ```

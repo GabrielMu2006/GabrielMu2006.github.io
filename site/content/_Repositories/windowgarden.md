@@ -3,7 +3,7 @@ title: "WindowGarden（窗口花园）"
 collection: Repositories
 type: "macOS desktop widget"
 permalink: /Repositories/windowgarden/
-date: 2026-10-03
+date: 2026-10-28
 status: "Active"
 link: "https://github.com/GabrielMu2006/WindowGarden"
 ---
@@ -28,14 +28,15 @@ WindowGarden（窗口花园）是一个 macOS 桌面陪伴应用：一个真正�
 
 ## 插画即接口
 
-- 花园的所有图样都是普通 PNG 文件，**替换即生效**——这是产品的正式接口，无需改代码、无需重新构建：菜单栏打开插画文件夹（`~/Library/Application Support/WindowGarden/art/`），用同名 PNG 覆盖，等几秒自动生效，急的话点「刷新组件」。
+- 花园的所有图样都是普通 PNG 文件，**替换即生效**——这是产品的正式接口，无需改代码、无需重新构建：菜单栏打开插画文件夹（`~/Library/Group Containers/group.com.windowgarden.app/art/`），用同名 PNG 覆盖，等几秒自动生效，急的话点「刷新组件」。
 - 命名与规格有明确约定：植物 `plant_<物种>_<1..4>.png`（6 物种 × 4 阶段，透明底、根部贴齐底边、竖构图），访客 `animal_<cat|bird|hedgehog>.png`（面朝左，程序按行走方向自动翻转），环境元素 `ambient_*.png` 共 7 个，另有可选的地面土带与菜单栏图标。
-- 应用内置的同名插画只是首次启动的默认素材，复制到本地目录后不会再覆盖自定义文件；重置可删除 `state.json` 或整个目录；`swift scripts/check_art.swift` 能批量检查透明底、贴底对齐与白底残留；想用 AI 生成整套素材，`ART_PROMPTS.md` 内含全部提示词。
+- 应用内置的同名插画只是首次启动的默认素材，复制到本地目录后不会再覆盖自定义文件；重置可删除 `~/Library/Group Containers/group.com.windowgarden.app/state.json` 或整个 `group.com.windowgarden.app` 目录；`swift scripts/check_art.swift` 能批量检查透明底、贴底对齐与白底残留；想用 AI 生成整套素材，`ART_PROMPTS.md` 内含全部提示词。
 
 ## 工程要点
 
 - **构建安装**：`./scripts/make_app.sh --install` 构建、安装到 `/Applications` 并注册进系统组件库；要求 macOS 14+。组件库只收录标准位置的应用，放在项目 `build/` 目录里会搜索不到。
 - README 记录了几条实测结论（macOS 26）：全局空闲查询（`CGEventSource.secondsSinceLastEventType`）不需要任何系统权限；组件扩展**必须沙盒化**才会被系统组件门禁收录，未沙盒的扩展被静默忽略；**SwiftPM 直接产出的组件扩展会被系统静默拒绝**，必须经 Xcode / xcodebuild 构建——仓库因此采用 `.xcodeproj` 加本地 SwiftPM 包的混合结构。
+- 后来修组件读取引擎状态时又确认一条：沙盒组件**读不到** `~/Library/Application Support`（Foundation 会在沙盒内把它重定向到组件自己的容器，`temporary-exception` 对 ad-hoc / 开发签名也不生效），所以引擎与组件的共享数据必须放在 App Group 容器 `~/Library/Group Containers/group.com.windowgarden.app/`。
 - 调试入口：`swift run GardenPreview` 离屏渲染各尺寸 × 各时段的预览图；`--growth-x` 可加速生长、`--debug` 输出心跳日志、`WG_STATE_DIR` 可隔离状态目录。
 
 ## 设计见解
@@ -45,6 +46,7 @@ WindowGarden（窗口花园）是一个 macOS 桌面陪伴应用：一个真正�
 ## 现状与限制
 
 - 仓库目前**没有发布安装包**，需要本地构建（`./scripts/make_app.sh --install`）；引擎需要保持运行花园才会生长。
+- 卸载时连同 `~/Library/Group Containers/group.com.windowgarden.app/` 一起删除（旧版本的数据目录是 `~/Library/Application Support/WindowGarden/`）。
 - 应用内置插画由 GPT 生成，与代码同按 MIT 分发；许可见 `LICENSE`。
 
 **Repository.** [GabrielMu2006/WindowGarden](https://github.com/GabrielMu2006/WindowGarden)

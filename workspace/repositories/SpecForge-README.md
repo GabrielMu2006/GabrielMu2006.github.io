@@ -26,6 +26,8 @@ SPEC.md：需求 + 规则 + 验收 + 任务 + 未决事项
 - **事实按需查证。** 只调研影响方案的事实；没有联网能力时，将它保留为待验证项。
 - **能继续修改。** 读入现有规格，检查新需求对流程、验收标准和任务的影响，保留稳定的需求与任务编号。
 - **适配项目类型。** 网站、App、脚本、自动化、插件和 skill 使用不同的提问重点。脚本不必有页面。
+- **先抓核心承诺。** 用具体成功与失败样例定义核心能力；关键验证任务会阻塞依赖工作，普通实现细节不强行变成访谈阻塞。
+- **交接包含体验与依据。** 有界面产品明确关键画面与信息层级；建议指标、正式门槛和实测值保持区分，并随任务与启动 prompt 传递。
 
 默认产出一个 `SPEC.md`。内容过多时，可把任务拆到 `TASKS.md`，并保留一个清晰入口。达到可开工条件就交付；有阻塞项则交付标明原因的 Draft，不制造“全部想清楚了”的假象。
 
@@ -110,11 +112,14 @@ scripts/                维护者使用的检查与打包工具
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-dev.txt
+.venv/bin/python -m unittest discover -s tests -v
 .venv/bin/python scripts/check.py
 .venv/bin/python scripts/package.py
 ```
 
-检查覆盖元数据、本地链接、必需资源和发布包内容。行为质量需要按 [回归场景](evals/README.md)进行真实对话评测；静态检查通过不代表访谈效果已被验证。贡献前请阅读 [贡献说明](CONTRIBUTING.md)。
+检查覆盖元数据、发布文件清单、Markdown 本地链接、示例任务图和发布包内容。可选 `scripts/check.py --spec 路径 --tasks 任务文件路径` 只做结构检查，格式与限制见[维护工具说明](scripts/README.md)。维护工具的 Python 与解析库不会进入 skill 发布包。
+
+行为质量需要按 [18 个回归场景](evals/README.md)进行真实对话评测；已有真实使用复盘与新版本前向运行分开记录，静态检查通过不代表访谈效果已被验证。贡献前请阅读 [贡献说明](CONTRIBUTING.md)。
 
 ## 边界
 

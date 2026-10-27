@@ -3,12 +3,12 @@ title: "SpecForge"
 collection: Repositories
 type: "Agent skill"
 permalink: /Repositories/specforge/
-date: 2026-09-27
+date: 2026-10-28
 status: "Released"
 link: "https://github.com/GabrielMu2006/SpecForge"
 ---
 
-SpecForge 是一个把「一句模糊想法」逐步打磨成可交给 Coding Agent 的 `SPEC.md` 的 Agent skill，面向不太懂开发、但想先把产品想清楚的人。它把需求讨论做成可复用的流程：分阶段提问、给出取舍建议、标记假设，最后整理出产品定位、用户、V1 与 V2、页面或其他交互入口、流程、业务规则、功能边界、Roadmap 和带可观察完成条件的任务清单。当前版本 `v0.1.0`，MIT 协议。
+SpecForge 是一个把「一句模糊想法」逐步打磨成可交给 Coding Agent 的 `SPEC.md` 的 Agent skill，面向不太懂开发、但想先把产品想清楚的人。它把需求讨论做成可复用的流程：分阶段提问、给出取舍建议、标记假设，最后整理出产品定位、用户、V1 与 V2、页面或其他交互入口、流程、业务规则、功能边界、Roadmap 和带可观察完成条件的任务清单。当前版本 `v0.2.0`，MIT 协议。
 
 ## 它如何工作
 
@@ -17,13 +17,15 @@ SpecForge 是一个把「一句模糊想法」逐步打磨成可交给 Coding Ag
 - 会主动指出冲突与范围膨胀，但不静默添加账号、支付、仪表盘、统计、AI 功能或第三方集成；可逆细节记为假设继续推进，核心价值与 V1 范围仍需明确决定，除非用户已明确委托。
 - 可读入已有规格做修订，检查新需求对流程、验收标准和任务的影响，并保留稳定的需求与任务编号。
 - 按项目类型调整提问重点：网站、App、脚本、自动化、插件和 skill 各有侧重，脚本不需要页面。
+- 首次交付包含代表性成功样例、误导性结果与失败边界；可能推翻 V1 的质量未知项保持为阻塞，明确可先做的验证工作和被阻塞的依赖任务。
+- 有界面的产品会明确关键画面、主动作与信息层级；建议目标、已采纳门槛和实测值分开记录，并随任务与启动 prompt 传递。
 
 ## 安装与运行
 
 - 运行 skill 本身不需要 Python、API Key、MCP 或特定模型，只需要一个能读取 skill 及其支持文件的 Agent；联网查证与写入文件取决于宿主能力。
-- 从 Releases 下载 `specforge-0.1.0.zip`（附 SHA-256 校验文件），解压后把整个 `specforge/` 放进 `~/.agents/skills/`（Codex）或 `~/.claude/skills/`（Claude Code），也支持项目内的 `.agents/skills/`、`.claude/skills/`；调用方式是 `$specforge …` 或 `/specforge …`。
+- 从 Releases 下载 `specforge-0.2.0.zip`（附 SHA-256 校验文件），解压后把整个 `specforge/` 放进 `~/.agents/skills/`（Codex）或 `~/.claude/skills/`（Claude Code），也支持项目内的 `.agents/skills/`、`.claude/skills/`；调用方式是 `$specforge …` 或 `/specforge …`。
 - 核心格式遵循 Agent Skills 规范；README 明确说明这些属于格式与文档层面的适配，尚未逐一完成不同宿主的真实多轮运行评测。
-- 维护者工具需要 Python 3.9+（不属于 skill 的运行依赖）：`scripts/check.py` 检查元数据、本地链接、必需资源与发布包内容，`scripts/package.py` 负责打包；CI 在 push 与 PR 上跑静态检查与打包，行为质量需按 `evals/` 的场景另行评测。
+- 维护者工具需要 Python 3.9+（不属于 skill 的运行依赖）：`scripts/check.py` 校验元数据、发布文件清单、Markdown 本地链接、示例任务图与发布包内容，并可用 `--spec` / `--tasks` 单独做结构 lint；`scripts/package.py` 负责打包，发布包固定为 7 个文件。行为质量按 `evals/` 的 18 个回归场景另行评测。
 
 ## 设计见解
 
@@ -34,7 +36,8 @@ SpecForge 是一个把「一句模糊想法」逐步打磨成可交给 Coding Ag
 - 不保证市场需求成立，不自动证明第三方集成可行，也不会因为生成了任务清单就宣称软件已经实现。
 - V1 聚焦产品层的开发交接，不预先强制技术栈、数据库或接口设计。
 - 仓库里的两个示例（共享课表网站、文件整理脚本）是人工编写的教学材料，含虚构的已选条件，不是用户访谈记录，也不是跨模型效果证明。
-- `evals/` 是可复用的行为评测方案，不是已完成的评测记录；静态检查通过不代表访谈质量或 skill 选择已被验证。
+- `evals/` 的 18 个编号场景在 `v0.2.0` 已有实际执行证据（归档了逐轮文件快照与哈希）；但发布说明明确强调这不等于 18 项原生宿主端到端全部通过，也不是稳定通过率或跨模型基准。
+- 真实使用对话只公开匿名复盘，回归输入与前向运行使用合成场景。
 - 不同宿主的真实多轮运行评测尚未逐一完成；`SKILL.md` 中的版本号是发布版本的权威来源。
 
 **Repository.** [GabrielMu2006/SpecForge](https://github.com/GabrielMu2006/SpecForge)

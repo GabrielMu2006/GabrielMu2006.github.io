@@ -3,7 +3,7 @@ title: "OpenPeriod（课隙）"
 collection: Repositories
 type: "Web application"
 permalink: /Repositories/openperiod/
-date: 2026-09-21
+date: 2026-10-28
 status: "Released"
 link: "https://github.com/GabrielMu2006/openperiod"
 ---
@@ -13,7 +13,7 @@ OpenPeriod（课隙）是一个响应式多人课表工具：每个人维护自�
 ## 核心能力
 
 - 邮箱加密码登录；注册、老账号首次设置密码和找回密码时才发送邮箱验证码。
-- 32 套学校 / 校区 / 季节作息预设，也支持每位用户自定义作息。
+- 109 套学校 / 校区 / 季节作息预设，也支持每位用户自定义作息。
 - 课表导入支持 Excel 行式与网格式解析（`.xlsx` / `.xls`），带导入预览与人工修正；导入按目标学校与学期隔离，确认时事务替换目标学期，并保留一份 7 天恢复点。
 - 可选的智谱 AI 截图 / 文字识别，识别结果必须进入同一个预览页确认后才写入课表。
 - 课程与上课时段管理、单周或批量标注「不去」、一次性或周期性的私人忙碌，以及「本学期无课」确认。

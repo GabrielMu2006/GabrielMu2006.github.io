@@ -15,7 +15,7 @@
 
 本仓库用于公开记录和展示新模型测试。每个阶段保存当期使用的原始 prompt、模型交付物、运行或测试方法、视觉证据以及复盘报告。目标不是只展示“最好看的结果”，而是尽量保留从任务输入到成果、验证和问题分析的完整链路。
 
-当前内容包括 **第一阶段（Phase 1）**：两个模型在 15 个任务上的成果、运行证据与独立评价——`DeepSeek-V4.1-Flash`（0910 实验版，DSH harness）与 `Muse Spark 1.3`（opencode harness）；**GPT-5.6 Sol**（Codex CLI 0.147.0）在同样 15 题上的成果与独立评价；以及 **第二阶段（Phase 2）的部分运行**：`DeepSeek-V4.1-Flash` 与 `Muse Spark 1.3` 各自的 Task 16–20（第二阶段共 30 题，其余 25 题尚未测试）。评估的能力包括：
+当前内容包括 **第一阶段（Phase 1）**：四个模型在同样 15 个任务上的成果、运行证据与独立评价——`DeepSeek-V4.1-Flash`（0910 实验版，DSH harness）、`Muse Spark 1.3`（opencode harness）、**GPT-5.6 Sol**（Codex CLI 0.147.0）与 **K3**（Kimi Code CLI 0.42.0）；以及 **第二阶段（Phase 2）的部分运行**：`DeepSeek-V4.1-Flash` 与 `Muse Spark 1.3` 各自的 Task 16–20（第二阶段共 30 题，其余 25 题尚未测试）。评估的能力包括：
 
 - SVG 视觉生成与精确约束遵循；
 - 单文件网页、游戏和创作工具；
@@ -23,7 +23,7 @@
 - 几何、计算、数据状态与错误处理；
 - 响应式设计、可访问性、视觉完成度和自动化测试。
 
-公开展示站 [vibetest.gabrielmu2006.cn](https://vibetest.gabrielmu2006.cn/) 目前收录 3 个模型 / 2 个阶段 / 20 个任务 / 55 条运行 / 100 条评价（第一阶段三模型：Human + 各 AI 评委；第二阶段每题已各挂 1 份 AI 评价）/ 3 份阶段评估，共 174 个静态页面与 55 项成果预览。界面按 [Digital Museum / 编辑出版物风格](website/VibeTest%20Digital%20Museum%20UI%20Design%20Specification.md) 设计（暖色纸质底、衬线标题、1px 分隔线，作品优先、不做排行榜），支持中英文切换、命令面板全站搜索（`⌘K` 或 `/`）、任务类型/模型/阶段 Chip 筛选、同题运行对比（选择写入 URL）、成果预览与深链；缺失值一律显示「未记录」，不推断、不补零。
+公开展示站 [vibetest.gabrielmu2006.cn](https://vibetest.gabrielmu2006.cn/) 目前收录 4 个模型 / 2 个阶段 / 20 个任务 / 70 条运行 / 115 条评价（第一阶段：DeepSeek 与 Muse 各有 1 份人工评价 + AI 评价，GPT 与 K3 目前各有 1 份/题 AI 评价、无人工评价；第二阶段：每题 1 份 AI 评价、均无人工评价）/ 5 份阶段评估，共 206 个静态页面与 59 项成果预览。界面按 [Digital Museum / 编辑出版物风格](website/VibeTest%20Digital%20Museum%20UI%20Design%20Specification.md) 设计（暖色纸质底、衬线标题、1px 分隔线，作品优先、不做排行榜），支持中英文切换、命令面板全站搜索（`⌘K` 或 `/`）、任务类型/模型/阶段 Chip 筛选、同题运行对比（选择写入 URL）、成果预览与深链；缺失值一律显示「未记录」，不推断、不补零。
 
 仓库将保留后续阶段扩展能力。未来可在 Test_Results/ 下增加模型文件夹，并在模型目录中增加阶段文件夹，并继续沿用“任务 → 原始 prompt → 成果 → 测试 → 评估”的归档方式。
 
@@ -32,8 +32,9 @@
 | 阶段 | 被测模型 | Harness | 任务数 | 核心完成率 | 内部综合评估 | 状态 |
 | --- | --- | --- | ---: | ---: | ---: | --- |
 | Phase 1 | DeepSeek-V4.1-Flash（0910 实验版） | DSH | 15 | 15/15 | 93.6/100（历史 AI 报告引用） | 已完成 |
-| Phase 1 | Muse Spark 1.3 | opencode 1.18.29 | 15 | 15/15 交付（2 题交付方式待改） | 84.9/100（维护 agent 非盲评 v1） | 已完成 |
+| Phase 1 | Muse Spark 1.3 | opencode 1.18.29 | 15 | 15/15 交付（2 题交付方式待改） | 86.5/100（两份 AI 非盲评均分：84.9 + 88.1） | 已完成 |
 | Phase 1 | GPT-5.6 Sol | Codex CLI 0.147.0 | 15 | 15/15 交付 | 82.9/100（维护 agent 非盲评 v3） | 已完成 |
+| Phase 1 | K3 | Kimi Code CLI 0.42.0（thinkingEffort max） | 15 | 15/15 交付 | 93.3/100（维护 agent 非盲评 v4） | 已完成 |
 | Phase 2 | Muse Spark 1.3（xhigh） | opencode 1.18.30 | 5 / 30（部分） | 5/5 交付 | 88.2/100（维护 agent v2 非盲评 AI 评价） | 部分完成（Task 16–20） |
 | Phase 2 | DeepSeek-V4.1-Flash（0910 实验版） | DSH | 5 / 30（部分） | 5/5 交付 | 91.0/100（Muse Spark 1.3 AI 评价） | 部分完成（Task 16–20） |
 
@@ -65,14 +66,14 @@
 
 ### 后续阶段（Phase 2）
 
-Phase 2 的 30 条高级纯创造题（Task 16–45）已写入 [`PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md`](PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md)，强调从空目录起步的复杂系统创作。**Task 16–20（5 题）已由两个模型完成并接入展示站**：`DeepSeek-V4.1-Flash` 的 0910 实验版（DSH）与 **Muse Spark 1.3 xhigh（opencode 1.18.30）**。Muse 的 5 题产出 1 份/题的 **AI 评价**（维护 agent v2，非盲评，平均 **88.2/100**）；DeepSeek 的 5 题**尚无独立评价**，站点显示「本运行暂无独立评价」；两批**都没有人工评价**，跨模型比较须注明 harness、预算与隔离差异（归档见 [phase-02 运行清单](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-02/README.md)）；Task 21–45 尚未测试。第二阶段目前**没有人工或 AI 评价**，因此上表只列交付情况、不给分数。
+Phase 2 的 30 条高级纯创造题（Task 16–45）已写入 [`PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md`](PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md)，强调从空目录起步的复杂系统创作。**Task 16–20（5 题）已由两个模型完成并接入展示站**：`DeepSeek-V4.1-Flash` 的 0910 实验版（DSH）与 **Muse Spark 1.3 xhigh（opencode 1.18.30）**。两批各产出 1 份/题的 **AI 评价**（均为非盲评，评委不同）：DeepSeek 由 **Muse Spark 1.3** 评（`Reviews/ai/muse-spark-v1/`，平均 **91.0/100**），Muse 由**维护 agent v2** 评（`Reviews/ai/maintenance-agent-v2/`，平均 **88.2/100**）；两批**都没有人工评价**，跨模型比较须注明 harness、预算与隔离差异（归档见 [phase-02 运行清单](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-02/README.md)）；Task 21–45 尚未测试。因此上表两行只列交付情况与各自的 AI 评价均分，**两份分数评委与口径不同，不得直接比较或排名**。
 
 Phase 2 的隔离等级为 `workspace-only`（`AGENTS.md` 两条绝对规则 + 收尾日志审查）：这是**策略级约束**，不是强制隔离，也不表示「无污染」。Task 16–45 的题目已在公开仓库发布（提交 `0540edf`，见 [已知问题](docs/known-issues.md)），成绩须同时标注该暴露。越界判定只影响标注、不影响成绩录入（2026-09-10 组织者决定）：`task-17`、`task-20` 记录了「越界尝试，未取得内容」，**只留在审计档案里**（运行页不作外显标注），不作排除。测试流程与接入步骤见[测试隔离与防答案污染](docs/testing-protocol.md)与[接入操作步骤](docs/adding-results.md)。
 
 ### 仓库结构
 
 ```text
-New_Model_Test/
+VibeTest/
 ├── README.md
 ├── AGENTS.md
 ├── PROMPT/
@@ -88,19 +89,22 @@ New_Model_Test/
 │   │   │   └── task-01-.../ ... task-15-.../
 │   │   └── phase-02/                  # Task 16–20（部分：共 30 题）
 │   │       ├── README.md
-│   │       ├── Reviews/               # 评价待产出
+│   │       ├── Reviews/ai/muse-spark-v1/
 │   │       └── task-16-.../ ... task-20-.../
-│   └── Muse-Spark-1.3_Opencode/
-│       ├── phase-01/
-│       │   ├── README.md
-│       │   ├── Reviews/
-│       │   ├── evidence/
-│       │   └── task-01-.../ ... task-15-.../
-│       └── phase-02/                  # 同题 Task 16–20（部分）
-│           ├── README.md
-│           ├── Reviews/ai/maintenance-agent-v2/
-│           └── task-16-.../ ... task-20-.../
-├── test-workspace/            # 后续阶段测试脚手架（隔离规则、启动方案、模板）
+│   ├── Muse-Spark-1.3_Opencode/
+│   │   ├── phase-01/
+│   │   │   ├── README.md
+│   │   │   ├── Reviews/
+│   │   │   ├── evidence/
+│   │   │   └── task-01-.../ ... task-15-.../
+│   │   └── phase-02/                  # 同题 Task 16–20（部分）
+│   │       ├── README.md
+│   │       ├── Reviews/ai/maintenance-agent-v2/
+│   │       └── task-16-.../ ... task-20-.../
+│   ├── GPT-5.6-Sol_Codex/phase-01/    # 同题 Task 01–15
+│   └── K3_KimiCode/phase-01/           # 同题 Task 01–15
+├── test-workspace/            # 后续阶段测试脚手架（隔离规则、启动方案、模板；本地目录，不入库）
+│                              # 并行副本 test-workspace-2/-3 同样不入库，每个副本只测一个模型
 ├── website/                   # Astro 展示站、导入器与自动化测试
 ├── docs/                      # 数据模型、测试流程、部署与验证记录
 └── .github/workflows/
@@ -113,7 +117,7 @@ New_Model_Test/
 - [Agent 协作规范](AGENTS.md)
 - [结果交接接口](docs/result-interface.md)与[接入操作步骤](docs/adding-results.md)
 - [测试隔离与防答案污染](docs/testing-protocol.md)
-- [测试工作区启动方案](test-workspace/README.md)：按阶段建任务目录、逐题隔离测试、汇总归档。
+- 测试工作区启动方案（`test-workspace/README.md`，本地目录，不入库）：按阶段建任务目录、逐题隔离测试、汇总归档。
 - [网站维护、发布及回退](docs/deployment.md)
 - [展示站 UI 设计规范（Digital Museum / 编辑出版物）](website/VibeTest%20Digital%20Museum%20UI%20Design%20Specification.md)
 
@@ -166,11 +170,27 @@ npm test
 **Muse Spark 1.3（opencode 1.18.29 harness）**
 
 - 15 个任务全部交付；task-12（计算器）与 task-15（读书追踪）的“未通过”经复核属于**交付方式问题**——交付物使用 ES module，`file://` 直接打开时被浏览器按 CORS 拦截，经 HTTP 提供服务后功能正常，不是功能逻辑缺陷。
-- 评分口径为维护 agent 的**非盲评 v1**（2026-09-09）：每题 73–92 分、平均 84.9/100，与 DeepSeek 的 93.6/100 评委与口径均不同，**不可直接比较**；独立盲评仍待补。
+- 评分口径有两份**非盲评 AI 阶段评价并列**（评委与口径不同）：维护 agent v1（2026-09-09，每题 73–92 分、平均 84.9/100）与 codex-v1（2026-09-09，含 Chromium 实际渲染复验，平均 88.1/100）。与 DeepSeek 的 93.6/100 评委与口径均不同，**不可直接比较**；独立盲评仍待补。
 - 累计用时 25 分 45 秒；178 次工具调用 / 8 次失败；token 过路量 3,669,385（输入 384,338 + 输出 154,563 + 缓存读 3,130,484）；费用 ¥0（contributor-free 档）。
 - 隔离等级为 `workspace-only`（配置 + 提示词约束），污染状态记为 `clean（组织者判定）`，范围仅限已声明的控制措施；判定依据的原始日志未随档案封存，因此不能解释为“训练数据无污染”。
 - 15 个 `prompt.txt` 为按题目文档**事后补录**并逐字比对，不是当时封存的输入副本。
 - 阶段索引、逐题明细与已知限制见 [Muse-Spark-1.3 / Phase 1](Test_Results/Muse-Spark-1.3_Opencode/phase-01/README.md)。
+
+**GPT-5.6 Sol（Codex CLI 0.147.0，medium effort）**
+
+- 15 个任务全部交付，每题一个独立会话；累计用时 76 分 46 秒，120 次 API 调用 / 76 次工具调用 / 1 次失败。
+- 评分口径为维护 agent 的**非盲评 v3**：每题 1 份 AI 评价，平均 82.9/100；与 DeepSeek 93.6、Muse 84.9/88.1 的评委与口径均不同，**不可直接比较**；独立盲评与人工评价仍待补。
+- 隔离等级 `workspace-only`（策略级约束 + 事后审查），15/15 未发现越界；Task 07/08 记录了本地 prompt 重读的流程偏差。
+- 快照 id `gpt-5.6-sol` 为 harness（Codex `turn_context`）报告值，**供应商侧快照未经独立确认**。
+- 阶段索引与逐题明细见 [GPT-5.6 Sol / Phase 1](Test_Results/GPT-5.6-Sol_Codex/phase-01/README.md)。
+
+**K3（Kimi Code CLI 0.42.0，thinkingEffort max）**
+
+- 15 个任务全部交付，每题一个全新独立单轮会话（无补充轮）；累计用时 196 分 10 秒，250 次 API 调用 / 259 次工具调用 / 12 次失败（2 次 harness 自动重试的连接错误 + 10 次自测迭代的工具错误返回）。
+- 工具调用遥测**完整可见**（含明文推理），因此走的是正常的逐维度审查而非「无遥测默认遵守」；15/15 未发现越界，5 题记录了程序性偏差（`/tmp` 临时文件、`/Applications` 等环境探测），均无外部内容流入。
+- 评分口径为维护 agent 的**非盲评 v4**：每题 1 份 AI 评价，平均 93.3/100；与其余评委口径不同，**不可直接比较**；独立盲评与人工评价仍待补。
+- 快照 id `k3` 为 harness 报告值（alias `kimi-code/k3`），**供应商侧快照未经独立确认**。
+- 阶段索引与逐题明细见 [K3 / Phase 1](Test_Results/K3_KimiCode/phase-01/README.md)。
 
 ### 后续阶段约定
 
@@ -195,7 +215,7 @@ npm test
 
 This repository publicly documents and showcases new-model evaluations. Each phase preserves the original prompts, model-produced artifacts, run or test instructions, visual evidence, and retrospective reports. The goal is not to present only the most attractive outputs, but to keep a traceable path from task input to result, verification, and issue analysis.
 
-The archive covers **Phase 1**: three models — `DeepSeek-V4.1-Flash` (0910 preview, DSH harness), `Muse Spark 1.3` (opencode harness) and `GPT-5.6 Sol` (Codex CLI 0.147.0) — on the same 15 tasks, with run evidence and independent reviews; plus a **partial Phase 2**: Tasks 16–20 completed and archived by `DeepSeek-V4.1-Flash` (0910 preview; 5 of 30 tasks; the remaining 25 have not been run and this part has no independent review yet). The suite examines:
+The archive covers **Phase 1**: four models — `DeepSeek-V4.1-Flash` (0910 preview, DSH harness), `Muse Spark 1.3` (opencode harness), `GPT-5.6 Sol` (Codex CLI 0.147.0) and `K3` (Kimi Code CLI 0.42.0) — on the same 15 tasks, with run evidence and independent reviews; plus a **partial Phase 2**: Tasks 16–20 completed and archived by `DeepSeek-V4.1-Flash` (0910 preview) and `Muse Spark 1.3` xhigh (5 of 30 tasks; the remaining 25 have not been run). The suite examines:
 
 - SVG generation and compliance with exact visual constraints;
 - self-contained web pages, games, and creative tools;
@@ -203,7 +223,7 @@ The archive covers **Phase 1**: three models — `DeepSeek-V4.1-Flash` (0910 pre
 - geometry, arithmetic, data state, and error handling;
 - responsive design, accessibility, visual finish, and automated testing.
 
-The public showcase [vibetest.gabrielmu2006.cn](https://vibetest.gabrielmu2006.cn/) currently covers 3 models / 2 phases / 20 tasks / 55 runs / 100 reviews (Phase 1: three models with a human review plus one or more AI reviews each; Phase 2: one AI review per run) across 174 static pages and 55 artifact previews. It uses a [Digital Museum / editorial archive interface](website/VibeTest%20Digital%20Museum%20UI%20Design%20Specification.md) (warm paper, serif display type, 1px dividers, works first, no leaderboard) with bilingual pages, a `⌘K` command palette, type/model/phase chip filters, same-task run comparison (selection kept in the URL), artifact previews and deep links; unknown values always read "Not recorded" instead of being inferred or zero-filled.
+The public showcase [vibetest.gabrielmu2006.cn](https://vibetest.gabrielmu2006.cn/) currently covers 4 models / 2 phases / 20 tasks / 70 runs / 115 reviews (Phase 1: a human review plus AI reviews for DeepSeek and Muse Spark, and one AI review per run for GPT-5.6 Sol and K3; Phase 2: one AI review per run, no human reviews) across 206 static pages and 59 artifact previews. It uses a [Digital Museum / editorial archive interface](website/VibeTest%20Digital%20Museum%20UI%20Design%20Specification.md) (warm paper, serif display type, 1px dividers, works first, no leaderboard) with bilingual pages, a `⌘K` command palette, type/model/phase chip filters, same-task run comparison (selection kept in the URL), artifact previews and deep links; unknown values always read "Not recorded" instead of being inferred or zero-filled.
 
 The repository is designed to grow. Future results can be added under Test_Results/<model-folder>/phase-NN/ while retaining the same “task → original prompt → artifact → test → evaluation” archive pattern.
 
@@ -212,8 +232,9 @@ The repository is designed to grow. Future results can be added under Test_Resul
 | Phase | Model under test | Harness | Tasks | Core completion | Internal evaluation | Status |
 | --- | --- | --- | ---: | ---: | ---: | --- |
 | Phase 1 | DeepSeek-V4.1-Flash (0910 preview) | DSH | 15 | 15/15 | 93.6/100 (quoted historical AI report) | Complete |
-| Phase 1 | Muse Spark 1.3 | opencode 1.18.29 | 15 | 15/15 delivered (2 flagged as delivery-method issues) | 84.9/100 (maintenance-agent non-blind v1) | Complete |
+| Phase 1 | Muse Spark 1.3 | opencode 1.18.29 | 15 | 15/15 delivered (2 flagged as delivery-method issues) | 86.5/100 (average of two non-blind AI reviews: 84.9 + 88.1) | Complete |
 | Phase 1 | GPT-5.6 Sol | Codex CLI 0.147.0 | 15 | 15/15 delivered | 82.9/100 (maintenance-agent non-blind v3) | Complete |
+| Phase 1 | K3 | Kimi Code CLI 0.42.0 (thinkingEffort max) | 15 | 15/15 delivered | 93.3/100 (maintenance-agent non-blind v4) | Complete |
 | Phase 2 | Muse Spark 1.3 (xhigh) | opencode 1.18.30 | 5 / 30 (partial) | 5/5 delivered | 88.2/100 (maintenance-agent v2, non-blind AI review) | Partial (Tasks 16–20) |
 | Phase 2 | DeepSeek-V4.1-Flash (0910 preview) | DSH | 5 / 30 (partial) | 5/5 delivered | 91.0/100 (Muse Spark 1.3 AI review) | Partial (Tasks 16–20) |
 
@@ -245,14 +266,14 @@ The repository is designed to grow. Future results can be added under Test_Resul
 
 ### Later phase (Phase 2)
 
-Phase 2 adds 30 advanced creation prompts (Task 16–45) in [`PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md`](PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md), focused on complex systems built from an empty directory. **Tasks 16–20 were completed and published by both models**: the 0910 preview snapshot of `DeepSeek-V4.1-Flash` (DSH) and **Muse Spark 1.3 xhigh (opencode 1.18.30)**. The five Muse runs carry one **AI review** each (maintenance-agent v2, non-blind, average **88.2/100**); the five DeepSeek runs have **no independent review yet**, shown on the site as “No independent review has been produced for this run yet”; neither batch has a human review, and cross-model comparison must note harness, budget and isolation differences (see the [phase-02 run index](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-02/README.md)); Tasks 21–45 have not been run. This phase has **no human or AI review yet**, so the table above records delivery only, with no score.
+Phase 2 adds 30 advanced creation prompts (Task 16–45) in [`PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md`](PROMPT/PHASE2_30_ADVANCED_CREATION_PROMPTS_BILINGUAL.md), focused on complex systems built from an empty directory. **Tasks 16–20 were completed and published by both models**: the 0910 preview snapshot of `DeepSeek-V4.1-Flash` (DSH) and **Muse Spark 1.3 xhigh (opencode 1.18.30)**. Each batch carries one **AI review** per run (both non-blind, different reviewers): the five DeepSeek runs were reviewed by **Muse Spark 1.3** (`Reviews/ai/muse-spark-v1/`, average **91.0/100**) and the five Muse runs by **maintenance-agent v2** (`Reviews/ai/maintenance-agent-v2/`, average **88.2/100**); neither batch has a human review, and cross-model comparison must note harness, budget and isolation differences (see the [phase-02 run index](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-02/README.md)); Tasks 21–45 have not been run. The two Phase 2 rows therefore record delivery plus each batch's own AI average, and those two scores come from different reviewers with different rubrics, so they **must not be compared or ranked directly**.
 
 Phase 2 isolation is `workspace-only` (two absolute `AGENTS.md` rules plus a post-hoc log audit): a **policy-level constraint**, not enforced isolation, and not a claim of “no contamination”. The Task 16–45 prompts are also published in this public repository (commit `0540edf`, see [known issues](docs/known-issues.md)), which the scores must be labelled with. A boundary finding affects annotation only, never score entry (organizer decision, 2026-09-10): `task-17` and `task-20` record “boundary attempt, no external content obtained”, kept in the audit archive only (never annotated on the run page), with no exclusion. See the [test isolation and anti-contamination protocol](docs/testing-protocol.md) and the [integration workflow](docs/adding-results.md).
 
 ### Repository layout
 
 ```text
-New_Model_Test/
+VibeTest/
 ├── README.md
 ├── AGENTS.md
 ├── PROMPT/
@@ -268,19 +289,21 @@ New_Model_Test/
 │   │   │   └── task-01-.../ ... task-15-.../
 │   │   └── phase-02/                  # Tasks 16-20 (partial: 5 of 30)
 │   │       ├── README.md
-│   │       ├── Reviews/               # reviews pending
+│   │       ├── Reviews/ai/muse-spark-v1/
 │   │       └── task-16-.../ ... task-20-.../
-│   └── Muse-Spark-1.3_Opencode/
-│       ├── phase-01/
-│       │   ├── README.md
-│       │   ├── Reviews/
-│       │   ├── evidence/
-│       │   └── task-01-.../ ... task-15-.../
-│       └── phase-02/                  # same Tasks 16-20 (partial)
-│           ├── README.md
-│           ├── Reviews/ai/maintenance-agent-v2/
-│           └── task-16-.../ ... task-20-.../
-├── test-workspace/            # Test scaffolding for later phases (isolation rules, runbook, templates)
+│   ├── Muse-Spark-1.3_Opencode/
+│   │   ├── phase-01/
+│   │   │   ├── README.md
+│   │   │   ├── Reviews/
+│   │   │   ├── evidence/
+│   │   │   └── task-01-.../ ... task-15-.../
+│   │   └── phase-02/                  # same Tasks 16-20 (partial)
+│   │       ├── README.md
+│   │       ├── Reviews/ai/maintenance-agent-v2/
+│   │       └── task-16-.../ ... task-20-.../
+│   ├── GPT-5.6-Sol_Codex/phase-01/    # same Tasks 01-15
+│   └── K3_KimiCode/phase-01/           # same Tasks 01-15
+├── test-workspace/            # Test scaffolding for later phases (isolation rules, runbook, templates; local only, untracked)
 ├── website/                   # Astro showcase site, importer and automated tests
 ├── docs/                      # Data model, test protocol, deployment and verification records
 └── .github/workflows/
@@ -293,7 +316,7 @@ Future phases live inside each model folder under Test_Results/. The root README
 - [Agent instructions](AGENTS.md)
 - [Result interface](docs/result-interface.md) and [integration workflow](docs/adding-results.md)
 - [Test isolation and anti-contamination protocol](docs/testing-protocol.md)
-- [Test workspace runbook](test-workspace/README.md): phase scaffolding, per-task isolation, summary and archiving.
+- Test workspace runbook (`test-workspace/README.md`, local only, untracked): phase scaffolding, per-task isolation, summary and archiving.
 - [Deployment and rollback](docs/deployment.md)
 - [Website UI design specification (Digital Museum / editorial archive)](website/VibeTest%20Digital%20Museum%20UI%20Design%20Specification.md)
 
@@ -304,6 +327,7 @@ Future phases live inside each model folder under Test_Results/. The root README
 - [Result archive index](Test_Results/README.md)
 - [Phase 1 index and run instructions](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/README.md)
 - [Muse Spark 1.3 Phase 1 index](Test_Results/Muse-Spark-1.3_Opencode/phase-01/README.md)
+- [K3 Phase 1 index](Test_Results/K3_KimiCode/phase-01/README.md)
 - [Quality evaluation of all 15 completed tasks](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/15-任务完成质量评估.md)
 - [Execution metrics and evaluation retrospective](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/DeepSeek-V4.1-Flash-Exp-0910-任务评测复盘.md)
 - [Human-review summary](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DSH/phase-01/Reviews/Personal_Review.md)
@@ -346,7 +370,7 @@ See the [quality evaluation report](Test_Results/DeepSeek-V4.1-Flash-Exp-0910_DS
 **Muse Spark 1.3 (opencode 1.18.29 harness)**
 
 - All 15 tasks were delivered; the "failed" verdicts for task-12 (calculator) and task-15 (book tracker) were re-checked as **delivery-method issues** — the artifacts use ES modules, which browsers block under `file://` for CORS reasons, and they work once served over HTTP. They are not functional defects.
-- Scores come from the maintenance agent's **non-blind v1 review** (2026-09-09): 73–92 per task, 84.9/100 average. The reviewer and rubric differ from the DeepSeek 93.6/100, so the two **must not be compared directly**; an independent blind review is still pending.
+- Scores come from **two non-blind AI phase assessments kept side by side** (different reviewers and rubrics): maintenance-agent v1 (2026-09-09, 73–92 per task, 84.9/100 average) and codex-v1 (2026-09-09, including a real Chromium render re-check, 88.1/100 average). The reviewers and rubrics differ from the DeepSeek 93.6/100, so the two **must not be compared directly**; an independent blind review is still pending.
 - 25 min 45 s total; 178 tool calls / 8 failures; 3,669,385 tokens passed through (384,338 input + 154,563 output + 3,130,484 cache reads); cost ¥0 (contributor-free tier).
 - Isolation level `workspace-only` (configuration plus prompt constraints) with contamination status `clean (organizer verdict)`, limited to the declared controls. The evidence behind that verdict was not archived, so it cannot be read as "no training-data contamination".
 - The 15 `prompt.txt` files are **post-hoc transcriptions** checked word by word against the task document, not input copies sealed at run time.

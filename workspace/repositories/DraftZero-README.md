@@ -9,7 +9,7 @@
 ## 功能
 
 - **收纳**：拖入 TXT / Markdown / PDF，或粘贴网页与 GitHub 链接；导入逐项报告，重复有提示，原文件永不改动。PDF 支持应用内翻页预览（扫描版会标注「无可用于关联的文字」）。
-- **本机归类建议**：离线 multilingual-e5-small 语义向量 + 字面线索 → 「同一项目线索」与「可能重复」两个待审队列，每条附能定位到原文的证据；接受 / 拒绝 / 暂缓由你决定，拒绝后不再重复打扰。
+- **本机归类建议**：离线 multilingual-e5-small 语义向量（两端同栈 ONNX 推理）+ 字面线索 → 「同一项目线索」与「可能重复」两个待审队列，每条附能定位到原文的证据；接受 / 拒绝 / 暂缓由你决定，拒绝后不再重复打扰。
 - **项目整理**：一稿多项目、待整理 / TODO / 进行中 / 基本完成 / 暂时封存、标签筛选、全文搜索。
 - **版本与恢复**：编辑自动留版本（静默 60 秒结算），可对比、可恢复；拆分 / 合并保留双向来路。
 - **双向迁移**：`.dzarchive` 档案（含草稿正文、版本、项目、PDF、你的裁决）在 Mac ↔ Windows 之间互相导入导出；仅向空工作区导入，先整体校验再原子写入。
@@ -21,12 +21,12 @@
 
 两个平台都在 [Releases](https://github.com/GabrielMu2006/DraftZero/releases) 下载，**均为未签名的预览版（Pre-release）**，首次运行需一步手动确认；请不要为此全局关闭系统保护。
 
-**macOS**（Apple Silicon，macOS 26+，`DraftZero-v0.2.0-arm64.zip`）：
+**macOS**（Apple Silicon，macOS 26+，`DraftZero-v0.2.1-arm64.zip`）：
 
 1. 解压，把 `DraftZero.app` 拖入「应用程序」；
 2. 首次打开若被拦：右键点应用 →「打开」；仍被拦则到 **系统设置 → 隐私与安全性** 点「仍要打开」。
 
-**Windows**（Windows 11 24H2+ x64，`DraftZero-Setup-v0.2.0-win-x64.exe`）：
+**Windows**（Windows 11 24H2+ x64，`DraftZero-Setup-v0.2.1-win-x64.exe`）：
 
 1. 双击安装，SmartScreen 提示时点「更多信息 → 仍要运行」；每用户安装，无需管理员；
 2. 全组件随包分发（自带 .NET runtime 与离线模型，约 274 MB），建立开始菜单与卸载入口，注册 `draftzero://` 协议；卸载保留 `%LocalAppData%\DraftZero\` 数据。
@@ -58,7 +58,7 @@ Windows:  %LocalAppData%\DraftZero\                  # 同上
 - **实现一致性**：两端分词与 Python 参考逐条一致；Windows fp32 推理与 Python 参考逐位吻合；Mac 为 int8 CoreML（量化噪声已记录，见发布说明）。
 - Windows 实机安装 / 迁移 / 升级 / 卸载已于 2026-10 由产品所有者复核通过；**Narrator 朗读、DeepSeek 付费路径、Mac VoiceOver 仍未真人复核**（完整清单见发布说明）。
 
-完整说明与已知限制见 [RELEASE-NOTES-v0.2.0.md](RELEASE-NOTES-v0.2.0.md)。
+完整说明与已知限制见 [RELEASE-NOTES-v0.2.1.md](RELEASE-NOTES-v0.2.1.md)（引擎升级）与 [RELEASE-NOTES-v0.2.0.md](RELEASE-NOTES-v0.2.0.md)（Windows 版与迁移）。
 
 ## 开发
 
